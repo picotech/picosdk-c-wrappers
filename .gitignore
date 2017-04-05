@@ -1,4 +1,4 @@
-# .gitignore file for picosdk-c-examples repository
+# .gitignore file for picosdk-c-wrappers repository
 # Untracked files/folders to ignore.
 
 # Windows Platforms
@@ -11,5 +11,7 @@
 **/*.vcxproj.user
 **/x64
 **/*.opensdf
+**/*.dll
+**/*.lib
 
 
