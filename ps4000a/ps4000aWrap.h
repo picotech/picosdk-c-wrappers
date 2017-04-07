@@ -1,13 +1,14 @@
 /****************************************************************************
  *
  * Filename:    ps4000aWrap.h
- * Copyright:   Pico Technology Limited 2014
- * Author:      HSM
+ *
  * Description:
  *
- * This header defines the interface to the wrapper dll for the 
- *	PicoScope 4000 series of PC Oscilloscopes using the PicoScope 4000 
- *  Series 'A' API.
+ * This header defines the interface to the wrapper library for the 
+ * PicoScope 4000 series of PC Oscilloscopes using the PicoScope 4000 
+ *  Series 'A' API functions.
+ *
+ * Copyright (C) 2014 - 2017 Pico Technology Ltd. See LICENSE file for terms.
  *
  ****************************************************************************/
 #ifndef __PS4000AWRAP_H__
@@ -64,7 +65,7 @@ int16_t		_triggered = FALSE;
 uint32_t	_startIndex;
 int16_t		_overflow = 0;
 
-int16_t		_channelCount = 0; // Should be set to 8 from the main application for the PicoScope 4824
+int16_t		_channelCount = 0; // Should be set to the correct number of channels for the PicoScope from the main application.
 int16_t		_enabledChannels[PS4000A_MAX_CHANNELS] = {0, 0, 0, 0, 0, 0, 0, 0}; // Keep a record of the channels that are enabled
 
 typedef struct tWrapBufferInfo

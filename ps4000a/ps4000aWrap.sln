@@ -1,7 +1,9 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{37B97D02-7551-4A1D-ACD2-55D8D128EF14}") = "ps4000aWrap", "ps4000aWrap.vcxproj", "{39F51DB9-3D13-455B-9CD4-66DE774C87D9}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Express 14 for Windows Desktop
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ps4000aWrap", "ps4000aWrap.vcxproj", "{39F51DB9-3D13-455B-9CD4-66DE774C87D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
