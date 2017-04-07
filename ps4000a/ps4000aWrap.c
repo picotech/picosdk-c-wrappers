@@ -1,5 +1,4 @@
 /*******************************************************************************
- * 
  * Filename: ps4000aWrap.c
  *
  * Description:
@@ -476,9 +475,9 @@ extern PICO_STATUS PREF0 PREF1 setMaxMinAppAndDriverBuffers(int16_t handle, int1
 * conditionsArray - an array of integer values specifying the conditions 
 *					for each channel.
 * nConditions - the number that will be passed after the wrapper code has 
-*				created its structures 
+*				created its structures
 				(i.e. the number of conditionsArray elements / 2).
-* info - see info in ps4000SetTriggerChannelConditions 
+* info - see info in ps4000SetTriggerChannelConditions. 
 *
 * Returns:
 *
@@ -571,7 +570,7 @@ extern PICO_STATUS PREF0 PREF1 setTriggerDirections(int16_t handle, int32_t *dir
 *					in ps4000aSetTriggerChannelProperties.
 * nProperties - the number that will be passed after the wrapper code has
 *				created its structures. (i.e. the number of propertiesArray
-*				elements / 6)
+*				elements / 6).
 * autoTrig - see autoTriggerMilliseconds in ps4000aSetTriggerChannelProperties.
 *
 *
@@ -603,6 +602,52 @@ extern PICO_STATUS PREF0 PREF1 setTriggerProperties(int16_t handle, int32_t *pro
 	}
 	status = ps4000aSetTriggerChannelProperties(handle, channelProperties, nProperties, auxEnable, autoTrig);
 	free(channelProperties);
+
+	return status;
+}
+
+/****************************************************************************
+* setPulseWidthQualifierConditions
+*
+* This function sets up the conditions for pulse width qualification. 
+* The pulse width qualifier (PWQ) is defined by one or more sets of integers 
+* corresponding to PS4000A_CONDITION structures which are then converted 
+* and passed to the ps4000aSetPulseWidthQualifierConditions function.
+*
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the device handle.
+* conditionsArray - an array of integer values specifying the PWQ conditions
+*					for each channel.
+* nConditions - the number that will be passed after the wrapper code has
+*				created its structures
+(i.e. the number of conditionsArray elements / 2).
+* info - see info in ps4000SetTriggerChannelConditions.
+*
+* Returns:
+*
+* See ps4000aSetPulseWidthQualifierConditions.
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 setPulseWidthQualifierConditions(int16_t handle, int32_t *conditionsArray, int16_t nConditions, int32_t info)
+{
+	PICO_STATUS status;
+	int16_t i = 0;
+	int16_t j = 0;
+
+	PS4000A_CONDITION *conditions = (PS4000A_CONDITION *)calloc(nConditions, sizeof(PS4000A_CONDITION));
+
+	for (i = 0; i < nConditions; i++)
+	{
+		conditions[i].source = (PS4000A_CHANNEL)conditionsArray[j];
+		conditions[i].condition = (PS4000A_TRIGGER_STATE)conditionsArray[j + 1];
+
+		j = j + 2;
+	}
+
+	status = ps4000aSetPulseWidthQualifierConditions(handle, conditions, nConditions, (PS4000A_CONDITIONS_INFO)info);
+	free(conditions);
 
 	return status;
 }

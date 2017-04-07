@@ -180,6 +180,12 @@ extern PICO_STATUS PREF0 PREF1 setTriggerProperties
 	int32_t autoTrig
 );
 
-
+extern PICO_STATUS PREF0 PREF1 setPulseWidthQualifierConditions
+(
+	int16_t handle,
+	int32_t *conditionsArray,
+	int16_t nConditions,
+	int32_t info
+);
 
 #endif
