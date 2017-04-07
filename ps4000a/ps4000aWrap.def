@@ -14,3 +14,4 @@ EXPORTS
 	setTriggerConditions = _setTriggerConditions@16
 	setTriggerDirections = _setTriggerDirections@12
 	setTriggerProperties = _setTriggerProperties@16
+	setPulseWidthQualifierConditions = _setPulseWidthQualifierConditions@16
