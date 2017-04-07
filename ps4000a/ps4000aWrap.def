@@ -11,3 +11,6 @@ EXPORTS
 	setEnabledChannels = _setEnabledChannels@8
 	setAppAndDriverBuffers = _setAppAndDriverBuffers@20
 	setMaxMinAppAndDriverBuffers = _setMaxMinAppAndDriverBuffers@28
+	setTriggerConditions = _setTriggerConditions@16
+	setTriggerDirections = _setTriggerDirections@12
+	setTriggerProperties = _setTriggerProperties@16

@@ -156,4 +156,29 @@ extern PICO_STATUS PREF0 PREF1 setMaxMinAppAndDriverBuffers
 	int32_t bufferLength
 );
 
+extern PICO_STATUS PREF0 PREF1 setTriggerConditions
+(
+	int16_t handle,
+	int32_t *conditionsArray,
+	int16_t nConditions,
+	int32_t info
+);
+
+extern PICO_STATUS PREF0 PREF1 setTriggerDirections
+(
+	int16_t handle,
+	int32_t *directionsArray,
+	int16_t nDirections
+);
+
+extern PICO_STATUS PREF0 PREF1 setTriggerProperties
+(
+	int16_t handle,
+	int32_t *propertiesArray,
+	int16_t nProperties,
+	int32_t autoTrig
+);
+
+
+
 #endif

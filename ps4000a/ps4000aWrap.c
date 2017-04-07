@@ -1,23 +1,18 @@
-/**************************************************************************
-// PICO_SIGNATURE
+/*******************************************************************************
+ * Filename: ps4000aWrap.c
  *
  * Description:
- *   The source code in this release is for use with Pico products when 
+ *  The source code in this release is for use with Pico products when 
  *	interfaced with Microsoft Excel VBA, National Instruments LabVIEW and 
  *	MathWorks MATLAB or any third-party programming language or application 
  *	that is unable to support C-style callback functions or structures.
  *
- *	You may modify, copy and distribute the source code for the purpose of 
- *	developing programs to collect data using Pico products to add new 
- *	functionality. If you modify the standard functions provided, we cannot 
- *	guarantee that they will work with the above-listed programming 
- *	languages or third-party products.
+ *  Please refer to the PicoScope 4000 Series (A API) Programmer's Guide
+ *  for descriptions of the underlying functions where stated.
  *
- *   Please refer to the PicoScope 4000 Series (A API) Programmer's Guide
- *   for descriptions of the underlying functions where stated.
+ *  Copyright (C) 2014 - 2017 Pico Technology Ltd. See LICENSE file for terms.
  *
- * 
- **************************************************************************/
+ ******************************************************************************/
 
 #include "ps4000aWrap.h"
 
@@ -110,10 +105,10 @@ void PREF1 BlockCallback(int16_t handle, PICO_STATUS status, void * pParameter)
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* preTriggerSamples � see noOfPreTriggerSamples in ps4000aRunBlock.
-* postTriggerSamples � see noOfPreTriggerSamples in ps4000aRunBlock.
-* timebase � see ps4000aRunBlock.
-* segmentIndex � see ps4000aRunBlock.
+* preTriggerSamples - see noOfPreTriggerSamples in ps4000aRunBlock.
+* postTriggerSamples - see noOfPreTriggerSamples in ps4000aRunBlock.
+* timebase - see ps4000aRunBlock.
+* segmentIndex - see ps4000aRunBlock.
 *
 *
 * Returns:
@@ -191,7 +186,7 @@ extern uint32_t PREF0 PREF1 AvailableData(int16_t handle, uint32_t *startIndex)
 *
 * Indicates if the device has stopped on collection of the number of samples 
 * specified in the call to the ps4000aRunStreaming function (if the 
-* ps4000aRunStreaming function�s autostop flag is set).
+* ps4000aRunStreaming function's autostop flag is set).
 *
 * Input Arguments:
 *
@@ -227,8 +222,8 @@ extern int16_t PREF0 PREF1 AutoStopped(int16_t handle)
 *
 * Returns:
 *
-* 0 � Data is not yet available.
-* Non-zero � Data is ready to be collected.
+* 0 - Data is not yet available.
+* Non-zero - Data is ready to be collected.
 *
 ****************************************************************************/
 extern int16_t PREF0 PREF1 IsReady(int16_t handle)
@@ -250,8 +245,8 @@ extern int16_t PREF0 PREF1 IsReady(int16_t handle)
 *
 * Returns:
 *
-* 0 � The device has not triggered.
-* Non-zero � The device has been triggered.
+* 0 - The device has not triggered.
+* Non-zero - The device has been triggered.
 *
 ****************************************************************************/
 extern int16_t PREF0 PREF1 IsTriggerReady(int16_t handle, uint32_t *triggeredAt)
@@ -462,4 +457,151 @@ extern PICO_STATUS PREF0 PREF1 setMaxMinAppAndDriverBuffers(int16_t handle, int1
 	{
 		return PICO_INVALID_HANDLE;
 	}
+}
+
+/****************************************************************************
+* setTriggerConditions
+*
+* This function sets up trigger conditions on the scope's inputs. The trigger 
+* is defined by one or more sets of integers corresponding to 
+* PS4000A_CONDITION structures which are then converted and passed 
+* to the ps4000aSetTriggerChannelConditions function.
+*
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the device handle.
+* conditionsArray - an array of integer values specifying the conditions 
+*					for each channel.
+* nConditions - the number that will be passed after the wrapper code has 
+*				created its structures 
+				(i.e. the number of conditionsArray elements / 2).
+* info - see info in ps4000SetTriggerChannelConditions 
+*
+* Returns:
+*
+* See ps4000aSetTriggerChannelConditions return values.
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 setTriggerConditions(int16_t handle, int32_t *conditionsArray, int16_t nConditions, int32_t info)
+{
+	PICO_STATUS status;
+	int16_t i = 0;
+	int16_t j = 0;
+
+	PS4000A_CONDITION *conditions = (PS4000A_CONDITION *) calloc(nConditions, sizeof(PS4000A_CONDITION));
+
+	for (i = 0; i < nConditions; i++)
+	{
+		conditions[i].source	= (PS4000A_CHANNEL) conditionsArray[j];
+		conditions[i].condition = (PS4000A_TRIGGER_STATE) conditionsArray[j + 1];
+
+		j = j + 2;
+	}
+
+	status = ps4000aSetTriggerChannelConditions(handle, conditions, nConditions, (PS4000A_CONDITIONS_INFO) info);
+	free(conditions);
+
+	return status;
+}
+
+/****************************************************************************
+* setTriggerDirections
+*
+* This function sets the direction of the trigger for the specified channels.
+* The trigger direction(s) is(are) defined by one or more sets of integers 
+* corresponding to PS4000A_DIRECTION structures which are then converted and 
+* passed to the ps4000aSetTriggerChannelDirections function.
+*
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the device handle.
+* directionsArray - an array of integer values specifying the directions 
+*					for each channel.
+* nDirections - the number that will be passed after the wrapper code has 
+*				created its structures 
+*				(i.e. the number of directionsArray elements / 2).
+*
+* Returns:
+*
+* See ps4000aSetTriggerChannelDirections return values.
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 setTriggerDirections(int16_t handle, int32_t *directionsArray, int16_t nDirections)
+{
+	PICO_STATUS status;
+	int16_t i = 0;
+	int16_t j = 0;
+
+	PS4000A_DIRECTION *directions = (PS4000A_DIRECTION *) calloc(nDirections, sizeof(PS4000A_DIRECTION));
+
+	for (i = 0; i < nDirections; i++)
+	{
+		directions[i].channel	= (PS4000A_CHANNEL) directionsArray[j];
+		directions[i].direction = (PS4000A_THRESHOLD_DIRECTION) directionsArray[j + 1];
+
+		j = j + 2;
+	}
+
+	status = ps4000aSetTriggerChannelDirections(handle, directions, nDirections);
+	free(directions);
+
+	return status;
+}
+
+/****************************************************************************
+* setTriggerProperties
+*
+* This function is used to enable or disable triggering and set its
+* parameters by means of assigning the values from the propertiesArray to an
+* array of PS4000A_TRIGGER_CHANNEL_PROPERTIES structures which are then 
+* passed to the ps4000aSetTriggerChannelProperties function with the other 
+* parameters.
+
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the handle of the required device.
+* propertiesArray - an array of sets of integers corresponding to
+*					PS4000A_TRIGGER_CHANNEL_PROPERTIES structures describing the
+*					required properties to be set. See also channelProperties
+*					in ps4000aSetTriggerChannelProperties.
+* nProperties - the number that will be passed after the wrapper code has
+*				created its structures. (i.e. the number of propertiesArray
+*				elements / 6)
+* autoTrig - see autoTriggerMilliseconds in ps4000aSetTriggerChannelProperties.
+*
+*
+* Returns:
+*
+* See ps4000aSetChannelTriggerProperties return values.
+*
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 setTriggerProperties(int16_t handle, int32_t *propertiesArray, int16_t nProperties, int32_t autoTrig)
+{
+	PS4000A_TRIGGER_CHANNEL_PROPERTIES *channelProperties = (PS4000A_TRIGGER_CHANNEL_PROPERTIES *) 
+																calloc(nProperties, sizeof(PS4000A_TRIGGER_CHANNEL_PROPERTIES));
+	
+	int16_t i;
+	int16_t j = 0;
+	int16_t auxEnable = 0;
+	PICO_STATUS status;
+
+	for (i = 0; i < nProperties; i++)
+	{
+		channelProperties[i].thresholdUpper				= (int16_t) propertiesArray[j];
+		channelProperties[i].thresholdUpperHysteresis	= (uint16_t) propertiesArray[j + 1];
+		channelProperties[i].thresholdLower				= (int16_t) propertiesArray[j + 2];
+		channelProperties[i].thresholdLowerHysteresis	= (uint16_t) propertiesArray[j + 3];
+		channelProperties[i].channel					= (PS4000A_CHANNEL) propertiesArray[j + 4];
+		channelProperties[i].thresholdMode				= (PS4000A_THRESHOLD_MODE) propertiesArray[j + 5];
+
+		j = j + 6;
+	}
+	status = ps4000aSetTriggerChannelProperties(handle, channelProperties, nProperties, auxEnable, autoTrig);
+	free(channelProperties);
+
+	return status;
 }
