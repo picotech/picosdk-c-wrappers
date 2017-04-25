@@ -68,6 +68,8 @@ int16_t		_overflow = 0;
 int16_t		_channelCount = 0; // Should be set to the correct number of channels for the PicoScope from the main application.
 int16_t		_enabledChannels[PS4000A_MAX_CHANNELS] = {0, 0, 0, 0, 0, 0, 0, 0}; // Keep a record of the channels that are enabled
 
+int16_t		_probeStateChanged = 0;
+
 typedef struct tWrapBufferInfo
 {
 	int16_t *driverBuffers[PS4000A_MAX_CHANNEL_BUFFERS];
@@ -76,7 +78,16 @@ typedef struct tWrapBufferInfo
 
 } WRAP_BUFFER_INFO;
 
+typedef struct tWrapUserProbeInfo
+{
+	PICO_STATUS status;
+	PS4000A_USER_PROBE_INTERACTIONS userProbeInteractions[PS4000A_MAX_4_CHANNELS];
+	uint32_t numberOfProbes;
+
+}WRAP_USER_PROBE_INFO;
+
 WRAP_BUFFER_INFO _wrapBufferInfo;
+WRAP_USER_PROBE_INFO wrapUserProbeInfo;
 
 /////////////////////////////////
 //
@@ -186,6 +197,67 @@ extern PICO_STATUS PREF0 PREF1 setPulseWidthQualifierConditions
 	int32_t *conditionsArray,
 	int16_t nConditions,
 	int32_t info
+);
+
+// Probe Interaction functions
+
+extern PICO_STATUS PREF0 PREF1 setProbeInteractionCallback(int16_t handle);
+
+extern PICO_STATUS PREF0 PREF1 hasProbeStateChanged(int16_t handle, int16_t * probeStateChanged);
+
+extern PICO_STATUS PREF0 PREF1 clearProbeStateChanged(int16_t handle);
+
+extern PICO_STATUS PREF0 PREF1 getUserProbeInteractionsInfo
+(
+	int16_t handle, 
+	PS4000A_USER_PROBE_INTERACTIONS * probes, 
+	uint32_t * nProbes
+);
+
+extern PICO_STATUS PREF0 PREF1 getNumberOfProbes
+(
+	int16_t handle, 
+	int32_t * numberOfProbes
+);
+
+extern PICO_STATUS PREF0 PREF1 getUserProbeTypeInfo
+(
+	int16_t handle,
+	int32_t probeNumber,
+	int16_t * connected,
+	int32_t * channel,
+	int16_t * enabled,
+	int32_t * probeName,
+	int8_t * requiresPower,
+	int8_t * isPowered
+);
+
+extern PICO_STATUS PREF0 PREF1 getUserProbeRangeInfo
+(
+	int16_t handle, 
+	int32_t probeNumber, 
+	int32_t * probeOff, 
+	int32_t * rangeFirst, 
+	int32_t * rangeLast, 
+	int32_t * rangeCurrent
+);
+
+extern PICO_STATUS PREF0 PREF1 getUserProbeCouplingInfo
+(
+	int16_t handle, 
+	int32_t probeNumber, 
+	int32_t * couplingFirst, 
+	int32_t * couplingLast, 
+	int32_t * couplingCurrent
+);
+
+extern PICO_STATUS PREF0 PREF1 getUserProbeBandwidthInfo
+(
+	int16_t handle, 
+	int32_t probeNumber, 
+	int32_t * filterFlags, 
+	int32_t * filterCurrent, 
+	int32_t * defaultFilter
 );
 
 #endif

@@ -97,6 +97,52 @@ void PREF1 BlockCallback(int16_t handle, PICO_STATUS status, void * pParameter)
 }
 
 /****************************************************************************
+* Probe Interaction Callback
+*
+* See ps4000aProbeInteractions (callback)
+*
+****************************************************************************/
+void PREF4 ProbeInteractions(int16_t handle, PICO_STATUS status, PS4000A_USER_PROBE_INTERACTIONS * probes, uint32_t	nProbes)
+{
+	uint32_t i = 0;
+
+	wrapUserProbeInfo.status = status;
+	wrapUserProbeInfo.numberOfProbes = nProbes;
+
+	for (i = 0; i < nProbes; ++i)
+	{
+		wrapUserProbeInfo.userProbeInteractions[i].connected = probes[i].connected;
+
+		wrapUserProbeInfo.userProbeInteractions[i].channel			= probes[i].channel;
+		wrapUserProbeInfo.userProbeInteractions[i].enabled			= probes[i].enabled;
+
+		wrapUserProbeInfo.userProbeInteractions[i].probeName		= probes[i].probeName;
+
+		wrapUserProbeInfo.userProbeInteractions[i].requiresPower_	= probes[i].requiresPower_;
+		wrapUserProbeInfo.userProbeInteractions[i].isPowered_		= probes[i].isPowered_;
+
+		wrapUserProbeInfo.userProbeInteractions[i].status_			= probes[i].status_;
+
+		wrapUserProbeInfo.userProbeInteractions[i].probeOff			= probes[i].probeOff;
+
+		wrapUserProbeInfo.userProbeInteractions[i].rangeFirst_		= probes[i].rangeFirst_;
+		wrapUserProbeInfo.userProbeInteractions[i].rangeLast_		= probes[i].rangeLast_;
+		wrapUserProbeInfo.userProbeInteractions[i].rangeCurrent_	= probes[i].rangeLast_;
+
+		wrapUserProbeInfo.userProbeInteractions[i].couplingFirst_	= probes[i].couplingFirst_;
+		wrapUserProbeInfo.userProbeInteractions[i].couplingLast_	= probes[i].couplingLast_;
+		wrapUserProbeInfo.userProbeInteractions[i].couplingCurrent_ = probes[i].couplingCurrent_;
+
+		wrapUserProbeInfo.userProbeInteractions[i].filterFlags_		= probes[i].filterFlags_;
+		wrapUserProbeInfo.userProbeInteractions[i].filterCurrent_	= probes[i].filterCurrent_;
+		wrapUserProbeInfo.userProbeInteractions[i].defaultFilter_	= probes[i].defaultFilter_;
+	}
+
+	_probeStateChanged = 1;
+
+}
+
+/****************************************************************************
 * RunBlock
 *
 * This function starts collecting data in block mode without the requirement 
@@ -651,4 +697,392 @@ extern PICO_STATUS PREF0 PREF1 setPulseWidthQualifierConditions(int16_t handle, 
 	free(conditions);
 
 	return status;
+}
+
+/****************************************************************************
+* setProbeInteractionCallback
+*
+* This function sets the ProbeInteractions callback with the ps4000a driver.
+* This function should be called after the PicoScope 4444 device has been
+* successfully opened and before any call to ps4000aSetChannel().
+* Use with programming languages that do not support callback functions.
+*
+* Input Arguments:
+*
+* handle - the device handle.
+*
+* Returns:
+*
+* See ps4000aSetProbeInteractionCallback.
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 setProbeInteractionCallback(int16_t handle)
+{
+	_probeStateChanged = 0;
+	return ps4000aSetProbeInteractionCallback(handle, ProbeInteractions);
+	
+}
+
+/****************************************************************************
+* hasProbeStateChanged
+*
+* This function sets the ProbeInteractions callback with the ps4000a driver.
+* Use with programming languages that do not support callback functions.
+*
+* Input Arguments:
+*
+* handle - the device handle.
+* probeStateChanged - on exit, 1 if the probe state has changed, 0 otherwise. 
+*
+* Returns:
+*
+* PICO_OK, if successful
+* PICO_INVALID_HANDLE, if handle is invalid
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 hasProbeStateChanged(int16_t handle, int16_t * probeStateChanged)
+{
+	PICO_STATUS status = PICO_OK;
+
+	if (handle > 0)
+	{
+		*probeStateChanged = _probeStateChanged;
+	}
+	else
+	{
+		status = PICO_INVALID_HANDLE;
+	}
+
+	return status;
+}
+
+/****************************************************************************
+* clearProbeStateChanged
+*
+* Clears the _probeStateChanged flag. This function should be called after 
+* having completed retrieval of the probe information.
+*
+* Input Arguments:
+*
+* handle - the device handle.
+*
+* Returns:
+*
+* PICO_OK, if successful
+* PICO_INVALID_HANDLE, if handle is invalid
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 clearProbeStateChanged(int16_t handle)
+{
+	PICO_STATUS status = PICO_OK;
+
+	if (handle > 0)
+	{
+		_probeStateChanged = 0;
+	}
+	else
+	{
+		status = PICO_INVALID_HANDLE;
+	}
+
+	return status;
+}
+
+/****************************************************************************
+* getUserProbeInteractionsInfo
+*
+* Retrieves information on probe changes on scope devices that support 
+* PicoConnect (TM) probes. Use this function with programming languages that 
+* support structs.
+*
+* The hasProbeStateChanged() function should be called prior to calling this 
+* function to verify if there has been a change in the probe state.
+*
+* If this function is called, it is not necessary to call the 
+* clearProbeStateChanged() function after retrieving the probe information.
+*
+* Input Arguments:
+*
+* handle - the device handle.
+* probes - on entry a pointer to an array of PS4000A_USER_PROBE_INTERACTIONS
+*			structures.
+* nProbes - the number of elements in the probes array.
+*
+* Returns:
+*
+* Status code from ps4000aProbeInteractions, or
+* PICO_INVALID_HANDLE, if handle is invalid
+* PICO_INVALID_PARAMETER, if probes is NULL
+* PICO_MEMORY, if the array is not large enough for the number of probes
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 getUserProbeInteractionsInfo(int16_t handle, PS4000A_USER_PROBE_INTERACTIONS * probes, uint32_t * nProbes)
+{
+	PICO_STATUS status = PICO_OK;
+	uint32_t i = 0;
+
+	if (handle > 0)
+	{
+		status = wrapUserProbeInfo.status;
+		*nProbes = wrapUserProbeInfo.numberOfProbes;
+		
+		if (probes != NULL)
+		{
+			// Copy probe information
+			for (i = 0; i < wrapUserProbeInfo.numberOfProbes; i++)
+			{
+				if (&probes[i] && &wrapUserProbeInfo.userProbeInteractions[i])
+				{
+					memcpy_s(&probes[i], sizeof(PS4000A_USER_PROBE_INTERACTIONS), &wrapUserProbeInfo.userProbeInteractions[i], sizeof(PS4000A_USER_PROBE_INTERACTIONS));
+				}
+				else
+				{
+					return PICO_MEMORY;
+				}
+			}
+		}
+		else
+		{
+			return PICO_INVALID_PARAMETER;
+		}
+		
+	}
+	else
+	{
+		status = PICO_INVALID_HANDLE;
+	}
+
+	_probeStateChanged = 0;
+
+	return status;
+
+}
+
+/****************************************************************************
+* getNumberOfProbes
+*
+* Retrieves the number of probes and status code returned by the 
+* ps4000aProbeInteractions callback.
+*
+* Use this function with programming languages that do not support structs.
+*
+* The hasProbeStateChanged() function should have been called/polled before
+* calling this function.
+*
+* Input Arguments:
+*
+* handle - the device handle.
+* numberOfProbes - on exit, see ps4000aProbeInteractions.
+*
+* Returns:
+*
+* PICO_INVALID_HANDLE, if handle is invalid, 
+* Otherwise see ps4000aProbeInteractions
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 getNumberOfProbes(int16_t handle, int32_t * numberOfProbes)
+{
+	if (handle > 0)
+	{
+		*numberOfProbes = (int32_t) wrapUserProbeInfo.numberOfProbes;
+
+		return wrapUserProbeInfo.status;
+	}
+	else
+	{
+		return PICO_INVALID_HANDLE;
+	}
+}
+
+/****************************************************************************
+* getUserProbeTypeInfo
+*
+* Retrieves information on the probe type for the probe number specified 
+* on scope devices that support PicoConnect (TM) probes.
+*
+* Use this function with programming languages that do not support structs.
+*
+* The getNumberOfProbes() function should be called prior to calling this
+* function.
+*
+* Input Arguments:
+*
+* handle - the device handle.
+* probeNumber - a zero-based index corresponding to the probe for which
+*				information is required.
+* connected - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+* channel - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+* enabled - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+* probeName - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+* requiresPower - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+* isPowered - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+* status - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+*
+* Returns:
+*
+* PICO_INVALID_HANDLE, if handle is invalid
+* PICO_INVALID_PARAMETER, if probeNumber is invalid
+* Otherwise see PS4000A_USER_PROBE_INTERACTIONS structure
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 getUserProbeTypeInfo(int16_t handle, int32_t probeNumber, int16_t * connected, int32_t * channel, int16_t * enabled, int32_t * probeName, 
+														int8_t * requiresPower, int8_t * isPowered)
+{
+	if (handle > 0)
+	{
+		if (probeNumber >= 0 && probeNumber < (int32_t) wrapUserProbeInfo.numberOfProbes)
+		{
+			*connected		= (int16_t) wrapUserProbeInfo.userProbeInteractions[probeNumber].connected;
+			*channel		= (int32_t) wrapUserProbeInfo.userProbeInteractions[probeNumber].channel;
+			*enabled		= (int16_t) wrapUserProbeInfo.userProbeInteractions[probeNumber].enabled;
+			*probeName		= (int32_t) wrapUserProbeInfo.userProbeInteractions[probeNumber].probeName;
+			*requiresPower	= (int8_t) wrapUserProbeInfo.userProbeInteractions[probeNumber].requiresPower_;
+			*isPowered		= (int8_t) wrapUserProbeInfo.userProbeInteractions[probeNumber].isPowered_;
+
+			return wrapUserProbeInfo.userProbeInteractions[probeNumber].status_;
+		}
+		else
+		{
+			return PICO_INVALID_PARAMETER;
+		}
+	}
+	else
+	{
+		return PICO_INVALID_HANDLE;
+	}
+}
+
+/****************************************************************************
+* getUserProbeRangeInfo
+*
+* Retrieves information on the probe range for the probe number specified
+* on scope devices that support PicoConnect (TM) probes.
+*
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the device handle.
+* probeNumber - a zero-based index corresponding to the probe for which
+*				information is required.
+* probeOff - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+* rangeFirst - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+* rangeLast - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+* rangeCurrent - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+*
+* Returns:
+*
+* PICO_OK, if successful
+* PICO_INVALID_HANDLE, if handle is invalid
+* PICO_INVALID_PARAMETER, if probeNumber is invalid
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 getUserProbeRangeInfo(int16_t handle, int32_t probeNumber, int32_t * probeOff, int32_t * rangeFirst, int32_t * rangeLast, int32_t * rangeCurrent)
+{
+	if (handle > 0)
+	{
+		if (probeNumber >= 0 && probeNumber < (int32_t) wrapUserProbeInfo.numberOfProbes)
+		{
+			*probeOff		= (int32_t)wrapUserProbeInfo.userProbeInteractions[probeNumber].probeOff;
+			*rangeFirst		= (int32_t)wrapUserProbeInfo.userProbeInteractions[probeNumber].rangeFirst_;
+			*rangeLast		= (int32_t)wrapUserProbeInfo.userProbeInteractions[probeNumber].rangeLast_;
+			*rangeCurrent	= (int32_t)wrapUserProbeInfo.userProbeInteractions[probeNumber].rangeCurrent_;
+			
+			return PICO_OK;
+		}
+		else
+		{
+			return PICO_INVALID_PARAMETER;
+		}
+	}
+	else
+	{
+		return PICO_INVALID_HANDLE;
+	}
+}
+
+/****************************************************************************
+* getUserProbeCouplingInfo
+*
+* Retrieves information on the probe coupling for the probe number specified
+* on scope devices that support PicoConnect (TM) probes.
+*
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the device handle.
+* probeNumber - a zero-based index corresponding to the probe for which
+*				information is required.
+* couplingFirst - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+* couplingLast - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+* couplingCurrent - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+*
+* Returns:
+*
+* PICO_OK, if successful
+* PICO_INVALID_HANDLE, if handle is invalid
+* PICO_INVALID_PARAMETER, if probeNumber is invalid
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 getUserProbeCouplingInfo(int16_t handle, int32_t probeNumber, int32_t * couplingFirst, int32_t * couplingLast, int32_t * couplingCurrent)
+{
+	if (handle > 0)
+	{
+		if (probeNumber >= 0 && probeNumber < (int32_t)wrapUserProbeInfo.numberOfProbes)
+		{
+			*couplingFirst = (int32_t)wrapUserProbeInfo.userProbeInteractions[probeNumber].couplingFirst_;
+			*couplingLast = (int32_t)wrapUserProbeInfo.userProbeInteractions[probeNumber].couplingLast_;
+			*couplingCurrent = (int32_t)wrapUserProbeInfo.userProbeInteractions[probeNumber].couplingCurrent_;
+
+			return PICO_OK;
+		}
+		else
+		{
+			return PICO_INVALID_PARAMETER;
+		}
+	}
+	else
+	{
+		return PICO_INVALID_HANDLE;
+	}
+}
+
+/****************************************************************************
+* getUserProbeBandwidthInfo
+*
+* Retrieves information on the probe bandwidth limiter options for the 
+* probe number specified on scope devices that support PicoConnect (TM) 
+* probes.
+*
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the device handle.
+* probeNumber - a zero-based index corresponding to the probe for which
+*				information is required.
+* filterFlags - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+* filterCurrent - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+* defaultFilter - on exit, see PS4000A_USER_PROBE_INTERACTIONS structure
+*
+* Returns:
+*
+* PICO_OK, if successful
+* PICO_INVALID_HANDLE, if handle is invalid
+* PICO_INVALID_PARAMETER, if probeNumber is invalid
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 getUserProbeBandwidthInfo(int16_t handle, int32_t probeNumber, int32_t * filterFlags, int32_t * filterCurrent, int32_t * defaultFilter)
+{
+	if (handle > 0)
+	{
+		if (probeNumber >= 0 && probeNumber < (int32_t) wrapUserProbeInfo.numberOfProbes)
+		{
+			*filterFlags	= (int32_t)wrapUserProbeInfo.userProbeInteractions[probeNumber].filterFlags_;
+			*filterCurrent	= (int32_t)wrapUserProbeInfo.userProbeInteractions[probeNumber].filterCurrent_;
+			*defaultFilter	= (int32_t)wrapUserProbeInfo.userProbeInteractions[probeNumber].defaultFilter_;
+
+			return PICO_OK;
+		}
+		else
+		{
+			return PICO_INVALID_PARAMETER;
+		}
+	}
+	else
+	{
+		return PICO_INVALID_HANDLE;
+	}
 }
