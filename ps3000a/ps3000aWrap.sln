@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{F7E061F9-5BB9-4719-AB1C-B225F6E4C1D0}") = "ps3000aWrap", "ps3000aWrap.vcxproj", "{CA9BFC64-D7BF-4B02-88E2-38D85588ACBF}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Debug|x64 = Debug|x64
+		Release|Win32 = Release|Win32
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CA9BFC64-D7BF-4B02-88E2-38D85588ACBF}.Debug|Win32.ActiveCfg = Debug|Win32
+		{CA9BFC64-D7BF-4B02-88E2-38D85588ACBF}.Debug|Win32.Build.0 = Debug|Win32
+		{CA9BFC64-D7BF-4B02-88E2-38D85588ACBF}.Debug|x64.ActiveCfg = Debug|x64
+		{CA9BFC64-D7BF-4B02-88E2-38D85588ACBF}.Debug|x64.Build.0 = Debug|x64
+		{CA9BFC64-D7BF-4B02-88E2-38D85588ACBF}.Release|Win32.ActiveCfg = Release|Win32
+		{CA9BFC64-D7BF-4B02-88E2-38D85588ACBF}.Release|Win32.Build.0 = Release|Win32
+		{CA9BFC64-D7BF-4B02-88E2-38D85588ACBF}.Release|x64.ActiveCfg = Release|x64
+		{CA9BFC64-D7BF-4B02-88E2-38D85588ACBF}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,27 @@
+LIBRARY	"ps3000aWrap"
+EXPORTS
+
+	AutoStopped							=	_AutoStopped@4
+	AvailableData						=	_AvailableData@8
+	ClearTriggerReady					=	_ClearTriggerReady@4
+	decrementDeviceCount				=	_decrementDeviceCount@4
+	getDeviceCount						=   _getDeviceCount@0
+	GetStreamingLatestValues			=	_GetStreamingLatestValues@4
+	initWrapUnitInfo					=   _initWrapUnitInfo@8
+	IsReady								=	_IsReady@4
+	IsTriggerReady						=	_IsTriggerReady@8
+	RunBlock							=	_RunBlock@20
+	setAppAndDriverBuffers				=   _setAppAndDriverBuffers@20
+	setMaxMinAppAndDriverBuffers		=	_setMaxMinAppAndDriverBuffers@28
+	setAppAndDriverDigiBuffers			=   _setAppAndDriverDigiBuffers@20
+	setMaxMinAppAndDriverDigiBuffers	=	_setMaxMinAppAndDriverDigiBuffers@28
+	setChannelCount						=	_setChannelCount@8
+	setEnabledChannels					=	_setEnabledChannels@8
+	setDigitalPortCount					=	_setDigitalPortCount@8
+	setEnabledDigitalPorts				=	_setEnabledDigitalPorts@8
+	SetPulseWidthQualifier				=	_SetPulseWidthQualifier@28
+	SetPulseWidthQualifierV2			=	_SetPulseWidthQualifierV2@28
+	SetTriggerConditions				=	_SetTriggerConditions@12
+	SetTriggerConditionsV2				=   _SetTriggerConditionsV2@12
+	SetTriggerProperties				=	_SetTriggerProperties@16
+	resetNextDeviceIndex				=   _resetNextDeviceIndex@0
