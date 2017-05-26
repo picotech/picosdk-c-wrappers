@@ -1,0 +1,19 @@
+LIBRARY	"ps2000aWrap"
+EXPORTS
+	RunBlock					=	_RunBlock@20
+	AvailableData				=	_AvailableData@8
+	GetStreamingLatestValues	=	_GetStreamingLatestValues@4
+	AutoStopped					=	_AutoStopped@4
+	IsReady						=	_IsReady@4
+	IsTriggerReady				=	_IsTriggerReady@8
+	ClearTriggerReady			=	_ClearTriggerReady@4
+	SetTriggerProperties		=	_SetTriggerProperties@16
+    SetTriggerConditions		=	_SetTriggerConditions@12
+	SetPulseWidthQualifier		=	_SetPulseWidthQualifier@28
+	setChannelCount				=	_setChannelCount@4
+	setEnabledChannels			=	_setEnabledChannels@8
+	setEnabledDigitalPorts		=	_setEnabledDigitalPorts@8
+	setAppAndDriverBuffers		=   _setAppAndDriverBuffers@20
+	setMaxMinAppAndDriverBuffers =  _setMaxMinAppAndDriverBuffers@28
+	setAppAndDriverDigiBuffers	=   _setAppAndDriverDigiBuffers@20
+	setMaxMinAppAndDriverDigiBuffers =  _setMaxMinAppAndDriverDigiBuffers@28
