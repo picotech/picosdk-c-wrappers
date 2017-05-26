@@ -13,5 +13,6 @@
 **/*.opensdf
 **/*.dll
 **/*.lib
+**/*.suo
 
 
