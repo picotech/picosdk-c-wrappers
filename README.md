@@ -13,7 +13,7 @@ The Wrapper projects are for Microsoft Windows platforms and are grouped by driv
 
 #### Microsoft Windows
 
-* Microsoft Visual Studio 2015 (including Express and Community editions) or later. 
+* [Microsoft Visual Studio 2015](https://www.visualstudio.com/) (including Express and Community editions) or later. 
 
 #### Linux
 
