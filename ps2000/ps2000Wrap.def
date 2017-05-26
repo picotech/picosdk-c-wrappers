@@ -1,0 +1,11 @@
+LIBRARY		ps2000Wrap
+
+EXPORTS
+	FastStreamingReady = _FastStreamingReady@4
+	GetFastStreamingDetails = _GetFastStreamingDetails@28
+	PollFastStreaming = _PollFastStreaming@4
+	SetAggregateBuffer = _SetAggregateBuffer@20
+	SetBuffer = _SetBuffer@16
+	setEnabledChannels = _setEnabledChannels@8
+	clearFastStreamingParameters = _clearFastStreamingParameters@4
+	setCollectionInfo = _setCollectionInfo@12
