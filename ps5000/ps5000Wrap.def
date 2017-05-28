@@ -1,0 +1,15 @@
+LIBRARY	"ps5000Wrap"
+EXPORTS
+	RunBlock = _RunBlock@24
+	GetStreamingLatestValues = _GetStreamingLatestValues@4
+	AvailableData = _AvailableData@8
+	AutoStopped = _AutoStopped@4
+	IsReady = _IsReady@4
+	IsTriggerReady = _IsTriggerReady@8
+	ClearTriggerReady = _ClearTriggerReady@4
+	SetTriggerConditions = _SetTriggerConditions@12
+	SetTriggerProperties = _SetTriggerProperties@20
+	hasOverflowed = _hasOverflowed@4
+	setEnabledChannels = _setEnabledChannels@8
+	setAppAndDriverBuffers = _setAppAndDriverBuffers@20
+	setMaxMinAppAndDriverBuffers = _setMaxMinAppAndDriverBuffers@28
