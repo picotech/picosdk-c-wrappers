@@ -5,7 +5,7 @@ picosdk-c-wrappers is a set of C wrapper library projects for PicoScope oscillos
 The wrapper functions provided by the wrapper libraries are for use with programming languages such as MathWorks MATLAB, National Instruments LabVIEW
 and Microsoft Excel VBA that do not support features of the C programming language such as callback functions. The source code contained in the Wrapper projects contains a description of the functions and the input and output parameters.
 
-The Wrapper projects are for Microsoft Windows platforms and are grouped by driver. The source code files may be used for building libaries for Linux and Mac OS X platforms.
+The Wrapper projects are for Microsoft Windows platforms and are grouped by driver. The source code files may be customised for projects, and used for building wrapper libraries for Linux and Mac OS X platforms. 
 
 ## Getting started
 
@@ -27,6 +27,8 @@ The Wrapper projects are for Microsoft Windows platforms and are grouped by driv
 ### Installing prerequisite files
 
 Prerequisite files are available for the following platforms. Refer to the subsections below for further information.
+
+**Note:** Built versions of the wrapper libraries are available for each of the platforms mentioned below.
 
 #### Windows
 
