@@ -3,7 +3,7 @@
  * Filename:    ps4000Wrap.h
  *
  * Description:
- *  This header defines the interface to the wrapper dll for the 
+ *  This header defines the interface to the wrapper library for the 
  *	PicoScope 4000 series of PC Oscilloscopes.
  *
  * Copyright (C) 2008 - 2017 Pico Technology Ltd. See LICENSE file for terms.

@@ -181,7 +181,7 @@ extern PICO_STATUS PREF0 PREF1 GetStreamingLatestValues(int16_t handle)
 ****************************************************************************/
 extern uint32_t PREF0 PREF1 AvailableData(int16_t handle, uint32_t *startIndex)
 {
-	if( _ready )
+	if ( _ready )
 	{
 		*startIndex = _startIndex;
 		return _numSamples;
@@ -207,7 +207,7 @@ extern uint32_t PREF0 PREF1 AvailableData(int16_t handle, uint32_t *startIndex)
 ****************************************************************************/
 extern int16_t PREF0 PREF1 AutoStopped(int16_t handle)
 {
-	if( _ready) 
+	if ( _ready) 
 	{
 		return _autoStop;
 	}
@@ -284,7 +284,7 @@ extern int16_t PREF0 PREF1 IsTriggerReady(int16_t handle, uint32_t *triggeredAt)
 ****************************************************************************/
 extern int16_t PREF0 PREF1 ClearTriggerReady(int16_t handle)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
 		_triggeredAt = 0;
 		_triggered = FALSE;
@@ -441,9 +441,9 @@ extern int16_t PREF0 PREF1 hasOverflowed(int16_t handle)
 extern PICO_STATUS PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledChannels)
 {
 
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(_channelCount > 0 && _channelCount <= DUAL_SCOPE)
+		if (_channelCount > 0 && _channelCount <= DUAL_SCOPE)
 		{
 			memcpy_s((int16_t *) _enabledChannels, DUAL_SCOPE * sizeof(int16_t), 
 				(int16_t *) enabledChannels, DUAL_SCOPE * sizeof(int16_t));
@@ -486,9 +486,9 @@ extern PICO_STATUS PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enab
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 setAppAndDriverBuffers(int16_t handle, int16_t channel, int16_t * appBuffer, int16_t * driverBuffer, uint32_t bufferLength)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(channel < 0 || channel >= _channelCount)
+		if (channel < 0 || channel >= _channelCount)
 		{
 			return PICO_INVALID_CHANNEL;
 		}
@@ -537,9 +537,9 @@ extern PICO_STATUS PREF0 PREF1 setAppAndDriverBuffers(int16_t handle, int16_t ch
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 setMaxMinAppAndDriverBuffers(int16_t handle, int16_t channel, int16_t * appMaxBuffer, int16_t * appMinBuffer, int16_t * driverMaxBuffer, int16_t * driverMinBuffer, uint32_t bufferLength)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(channel < 0 || channel >= _channelCount)
+		if (channel < 0 || channel >= _channelCount)
 		{
 			return PICO_INVALID_CHANNEL;
 		}

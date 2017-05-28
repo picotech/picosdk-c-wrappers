@@ -53,14 +53,14 @@ void PREF1 my_get_overview_buffers(
 	g_auto_stop		= auto_stop;
 	g_nValues		= nValues;
 
-	for(channel = (int16_t) PS3000_CHANNEL_A; channel < g_channelCount; channel++)
+	for (channel = (int16_t) PS3000_CHANNEL_A; channel < g_channelCount; channel++)
 	{
-		if(nValues > 0)
+		if (nValues > 0)
 		{
-			if(g_enabledChannels[channel])
+			if (g_enabledChannels[channel])
 			{
 				// Ensure number of values to copy is correct as buffer length could be less than nValues
-				if(g_bufferLengthsSet[channel] == TRUE && g_bufferLengths[channel] < nValues)
+				if (g_bufferLengthsSet[channel] == TRUE && g_bufferLengths[channel] < nValues)
 				{
 					g_nValues = g_bufferLengths[channel];
 				}
@@ -68,14 +68,14 @@ void PREF1 my_get_overview_buffers(
 				// Copy data...
 
 				// Max buffers
-				if(g_overviewBuffers[channel * 2] && overviewBuffers[channel * 2])
+				if (g_overviewBuffers[channel * 2] && overviewBuffers[channel * 2])
 				{
 					memcpy_s(g_overviewBuffers[channel * 2], g_nValues * sizeof(int16_t),
 						overviewBuffers[channel * 2], g_nValues * sizeof(int16_t));
 				}
 
 				// Min buffers
-				if(g_overviewBuffers[channel * 2 + 1] && overviewBuffers[channel * 2 + 1])
+				if (g_overviewBuffers[channel * 2 + 1] && overviewBuffers[channel * 2 + 1])
 				{
 					memcpy_s(g_overviewBuffers[channel * 2 + 1], g_nValues * sizeof(int16_t),
 						overviewBuffers[channel * 2 + 1], g_nValues * sizeof(int16_t));
@@ -127,8 +127,8 @@ extern int16_t PREF0 PREF1 GetStreamingLastValues(int16_t handle)
 *
 * Returns:
 *
-* 0 � Data is not yet available.
-* Non-zero � Data is ready to be collected.
+* 0 - Data is not yet available.
+* Non-zero - Data is ready to be collected.
 *
 ****************************************************************************/
 extern int16_t PREF0 PREF1 IsReady(int16_t handle)
@@ -167,7 +167,7 @@ extern int16_t PREF0 PREF1 IsReady(int16_t handle)
 ****************************************************************************/
 extern int16_t PREF0 PREF1 AvailableData(int16_t handle, int16_t *overflow, uint32_t *triggeredAt, int16_t *triggered, int16_t *auto_stop, uint32_t *nValues)
 {
-	if(!g_ready)
+	if (!g_ready)
 	{
 		*overflow = 0;
 		*triggeredAt = 0;
@@ -233,9 +233,9 @@ extern int16_t PREF0 PREF1 ClearTriggerInfo(int16_t handle)
 ****************************************************************************/
 extern int16_t PREF0 PREF1 SetDataBuffer(int16_t handle, int16_t channel, int16_t * buffer, uint32_t bufferLength)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(channel >= PS3000_CHANNEL_A && channel < g_channelCount)
+		if (channel >= PS3000_CHANNEL_A && channel < g_channelCount)
 		{
 			g_overviewBuffers[channel * 2] = buffer;
 			g_bufferLengths[channel] = bufferLength;
@@ -309,9 +309,9 @@ extern void PREF0 PREF1 SetDataBuffers(int16_t handle, int16_t channel, int16_t 
 
 extern int16_t PREF0 PREF1 SetDataBuffersV2(int16_t handle, int16_t channel, int16_t * minBuffer, int16_t * maxBuffer, uint32_t bufferLength)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(channel >= PS3000_CHANNEL_A && channel < g_channelCount)
+		if (channel >= PS3000_CHANNEL_A && channel < g_channelCount)
 		{
 			g_overviewBuffers[channel * 2]			= maxBuffer;
 			g_overviewBuffers[(channel * 2) + 1]	= minBuffer;
@@ -349,9 +349,9 @@ extern int16_t PREF0 PREF1 SetDataBuffersV2(int16_t handle, int16_t channel, int
 ****************************************************************************/
 extern int16_t PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCount)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(channelCount == DUAL_SCOPE || channelCount == QUAD_SCOPE)
+		if (channelCount == DUAL_SCOPE || channelCount == QUAD_SCOPE)
 		{
 			g_channelCount = channelCount;
 
@@ -389,9 +389,9 @@ extern int16_t PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCount)
 ****************************************************************************/
 extern int16_t PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledChannels)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(g_channelCount == DUAL_SCOPE || g_channelCount == QUAD_SCOPE)
+		if (g_channelCount == DUAL_SCOPE || g_channelCount == QUAD_SCOPE)
 		{
 			memcpy_s((int16_t *)g_enabledChannels, MAX_CHANNELS * sizeof(int16_t), 
 				(int16_t *)enabledChannels, MAX_CHANNELS * sizeof(int16_t));
@@ -425,7 +425,7 @@ extern int16_t PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledC
 ****************************************************************************/
 extern int16_t PREF0 PREF1 clearFastStreamingParameters(int16_t handle)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
 		g_overflow	 = 0;
 		g_triggeredAt = 0;

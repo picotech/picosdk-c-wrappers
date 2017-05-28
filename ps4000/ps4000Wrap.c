@@ -113,11 +113,11 @@ void PREF1 BlockCallback(int16_t handle, PICO_STATUS status, void * pParameter)
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* preTriggerSamples � see noOfPreTriggerSamples in ps4000RunBlock.
-* postTriggerSamples � see noOfPreTriggerSamples in ps4000RunBlock.
-* timebase � see ps4000RunBlock.
+* preTriggerSamples - see noOfPreTriggerSamples in ps4000RunBlock.
+* postTriggerSamples - see noOfPreTriggerSamples in ps4000RunBlock.
+* timebase - see ps4000RunBlock.
 * oversample - see ps4000RunBlock.
-* segmentIndex � see ps4000RunBlock.
+* segmentIndex - see ps4000RunBlock.
 *
 *
 * Returns:
@@ -181,7 +181,7 @@ extern PICO_STATUS PREF0 PREF1 GetStreamingLatestValues(int16_t handle)
 ****************************************************************************/
 extern uint32_t PREF0 PREF1 AvailableData(int16_t handle, uint32_t *startIndex)
 {
-	if( _ready )
+	if ( _ready )
 	{
 		*startIndex = _startIndex;
 			
@@ -195,7 +195,7 @@ extern uint32_t PREF0 PREF1 AvailableData(int16_t handle, uint32_t *startIndex)
 *
 * Indicates if the device has stopped on collection of the number of samples 
 * specified in the call to the ps4000RunStreaming function (if the 
-* ps4000RunStreaming function�s autostop flag is set).
+* ps4000RunStreaming function's autostop flag is set).
 *
 * Input Arguments:
 *
@@ -208,7 +208,7 @@ extern uint32_t PREF0 PREF1 AvailableData(int16_t handle, uint32_t *startIndex)
 ****************************************************************************/
 extern int16_t PREF0 PREF1 AutoStopped(int16_t handle)
 {
-	if( _ready) 
+	if ( _ready) 
 	{
 		return _autoStop;
 	}
@@ -231,8 +231,8 @@ extern int16_t PREF0 PREF1 AutoStopped(int16_t handle)
 *
 * Returns:
 *
-* 0 � Data is not yet available.
-* Non-zero � Data is ready to be collected.
+* 0 - Data is not yet available.
+* Non-zero - Data is ready to be collected.
 *
 ****************************************************************************/
 extern int16_t PREF0 PREF1 IsReady(int16_t handle)
@@ -249,13 +249,13 @@ extern int16_t PREF0 PREF1 IsReady(int16_t handle)
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* triggeredAt � on exit, the index of the sample in the buffer where the 
+* triggeredAt - on exit, the index of the sample in the buffer where the 
 * trigger occurred.
 *
 * Returns:
 *
-* 0 � The device has not triggered.
-* Non-zero � The device has been triggered.
+* 0 - The device has not triggered.
+* Non-zero - The device has been triggered.
 *
 ****************************************************************************/
 extern int16_t PREF0 PREF1 IsTriggerReady(int16_t handle, uint32_t *triggeredAt)
@@ -285,7 +285,7 @@ extern int16_t PREF0 PREF1 IsTriggerReady(int16_t handle, uint32_t *triggeredAt)
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 ClearTriggerReady(int16_t handle)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
 		_triggeredAt = 0;
 		_triggered = FALSE;
@@ -311,9 +311,9 @@ extern PICO_STATUS PREF0 PREF1 ClearTriggerReady(int16_t handle)
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* conditionsArray � an array of integer values specifying the conditions 
+* conditionsArray - an array of integer values specifying the conditions 
 *					for each channel.
-* nConditions � the number that will be passed after the wrapper code has 
+* nConditions - the number that will be passed after the wrapper code has 
 * created its structures. (i.e. the number of conditionsArray elements / 7)
 *
 * Returns:
@@ -357,15 +357,15 @@ extern PICO_STATUS PREF0 PREF1 SetTriggerConditions(int16_t handle, int32_t *con
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* propertiesArray � an array of sets of integers corresponding to 
+* propertiesArray - an array of sets of integers corresponding to 
 *					TRIGGER_CHANNEL_PROPERTIES structures describing the 
 *					required properties to be set. See also channelProperties
 *					in ps4000SetTriggerChannelProperties.
 *
-* nProperties � the number that will be passed after the wrapper code has 
+* nProperties - the number that will be passed after the wrapper code has 
 *				created its structures. (i.e. the number of propertiesArray 
 *				elements / 6)
-* autoTrig � see autoTriggerMilliseconds in ps4000SetTriggerChannelProperties.
+* autoTrig - see autoTriggerMilliseconds in ps4000SetTriggerChannelProperties.
 *
 *
 * Returns:
@@ -417,10 +417,10 @@ extern PICO_STATUS PREF0 PREF1 SetTriggerProperties(
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* channel � the scope channel with which the buffer is to be associated.
+* channel - the scope channel with which the buffer is to be associated.
 * buffer - an array of size nCaptures * nSamples to store the waveform data
 *          in.
-* nCaptures � the number of waveform to be captured in one run.
+* nCaptures - the number of waveform to be captured in one run.
 * nSamples - the number of samples per waveform.
 *
 *
@@ -435,7 +435,7 @@ extern PICO_STATUS PREF0 PREF1 SetRapidBlockDataBuffers(int16_t handle, uint16_t
 	PICO_STATUS status = 0;
 	int16_t *currentBufferPtr;
 
-	for(capture = 0; capture < nCaptures && status == 0; capture++)
+	for (capture = 0; capture < nCaptures && status == 0; capture++)
 	{
 		currentBufferPtr = buffer + (capture * nSamples);
 		
@@ -484,9 +484,9 @@ extern int16_t PREF0 PREF1 HasOverflowed(int16_t handle)
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCount)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(channelCount == DUAL_SCOPE || channelCount == PS4000_MAX_CHANNELS)
+		if (channelCount == DUAL_SCOPE || channelCount == PS4000_MAX_CHANNELS)
 		{
 			_channelCount = channelCount;
 
@@ -524,9 +524,9 @@ extern PICO_STATUS PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCo
 extern PICO_STATUS PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledChannels)
 {
 
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(_channelCount > 0 && _channelCount <= PS4000_MAX_CHANNELS)
+		if (_channelCount > 0 && _channelCount <= PS4000_MAX_CHANNELS)
 		{
 			memcpy_s((int16_t *)_enabledChannels, PS4000_MAX_CHANNELS * sizeof(int16_t), 
 				(int16_t *)enabledChannels, PS4000_MAX_CHANNELS * sizeof(int16_t));
@@ -569,9 +569,9 @@ extern PICO_STATUS PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enab
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 setAppAndDriverBuffers(int16_t handle, int16_t channel, int16_t * appBuffer, int16_t * driverBuffer, int32_t bufferLength)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(channel < 0 || channel >= _channelCount)
+		if (channel < 0 || channel >= _channelCount)
 		{
 			return PICO_INVALID_CHANNEL;
 		}
@@ -620,9 +620,9 @@ extern PICO_STATUS PREF0 PREF1 setAppAndDriverBuffers(int16_t handle, int16_t ch
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 setMaxMinAppAndDriverBuffers(int16_t handle, int16_t channel, int16_t * appMaxBuffer, int16_t * appMinBuffer, int16_t * driverMaxBuffer, int16_t * driverMinBuffer, int32_t bufferLength)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(channel < 0 || channel >= _channelCount)
+		if (channel < 0 || channel >= _channelCount)
 		{
 			return PICO_INVALID_CHANNEL;
 		}

@@ -41,7 +41,7 @@
 void PREF1 GetValuesCallback(int16_t **overviewBuffers, int16_t overflow, uint32_t triggeredAt, int16_t triggered,
   int16_t auto_stop,uint32_t nValues)
 {    
-	if(_ready == 0)
+	if (_ready == 0)
 	{
 		uint16_t channel = 0;
 		uint32_t bufferSize = 0;
@@ -53,17 +53,17 @@ void PREF1 GetValuesCallback(int16_t **overviewBuffers, int16_t overflow, uint32
 
 		g_totalValues = g_totalValues + nValues;
 
-		if(nValues > 0 && g_appBufferFull == 0)
+		if (nValues > 0 && g_appBufferFull == 0)
 		{
-			for(channel = 0; channel < DUAL_SCOPE; channel++)
+			for (channel = 0; channel < DUAL_SCOPE; channel++)
 			{
-				if(_enabledChannels[channel] == 1)
+				if (_enabledChannels[channel] == 1)
 				{
-					if(g_totalValues <= g_wrapBufferInfo.bufferSizes[channel * 2] && !g_appBufferFull)
+					if (g_totalValues <= g_wrapBufferInfo.bufferSizes[channel * 2] && !g_appBufferFull)
 					{
 						_nValues = nValues;
 					}
-					else if(g_startIndex < g_wrapBufferInfo.bufferSizes[channel * 2])
+					else if (g_startIndex < g_wrapBufferInfo.bufferSizes[channel * 2])
 					{
 						_nValues = g_wrapBufferInfo.bufferSizes[channel * 2] - (g_startIndex + 1); // Only copy data into application buffer up to end
 						g_totalValues = g_wrapBufferInfo.bufferSizes[channel * 2];	// Total samples limited to application buffer
@@ -80,7 +80,7 @@ void PREF1 GetValuesCallback(int16_t **overviewBuffers, int16_t overflow, uint32
 					// Copy data...
 
 					// Max buffers
-					if(overviewBuffers[channel * 2] && g_wrapBufferInfo.appBuffers[channel * 2])
+					if (overviewBuffers[channel * 2] && g_wrapBufferInfo.appBuffers[channel * 2])
 					{
 						memcpy_s((void *) (g_wrapBufferInfo.appBuffers[channel * 2] + g_startIndex), _nValues * sizeof(int16_t), 
 										(void *) (overviewBuffers[channel * 2]), _nValues * sizeof(int16_t));
@@ -88,7 +88,7 @@ void PREF1 GetValuesCallback(int16_t **overviewBuffers, int16_t overflow, uint32
 					}
 
 					// Min buffers
-					if(overviewBuffers[channel * 2 + 1] && g_wrapBufferInfo.appBuffers[channel * 2 + 1])
+					if (overviewBuffers[channel * 2 + 1] && g_wrapBufferInfo.appBuffers[channel * 2 + 1])
 					{
 						memcpy_s((void *) (g_wrapBufferInfo.appBuffers[channel * 2 + 1] + g_startIndex), _nValues * sizeof(int16_t), 
 										(void *) (overviewBuffers[channel * 2 + 1]), _nValues * sizeof(int16_t));
@@ -165,7 +165,7 @@ extern void PREF0 PREF1 SetBuffer(int16_t handle, int16_t channel, int16_t * buf
 {
 	int16_t index = channel * 2;
 
-	if(index >= DUAL_SCOPE * 2) 
+	if (index >= DUAL_SCOPE * 2) 
 	{
 		return;
 	}
@@ -176,7 +176,7 @@ extern void PREF0 PREF1 SetBuffer(int16_t handle, int16_t channel, int16_t * buf
 	g_wrapBufferInfo.bufferSizes[index] = 0;
 	g_wrapBufferInfo.bufferSizes[index + 1] = 0;
 
-	if(buffer != NULL)
+	if (buffer != NULL)
 	{
 		g_wrapBufferInfo.appBuffers[index] = buffer;
 		g_wrapBufferInfo.bufferSizes[index] = bufferSize;
@@ -211,7 +211,7 @@ extern void PREF0 PREF1 SetAggregateBuffer(int16_t handle, int16_t channel, int1
 {
     int16_t index = channel * 2;
     
-	if(index >= DUAL_SCOPE * 2) 
+	if (index >= DUAL_SCOPE * 2) 
 	{
 		return;
 	}
@@ -221,13 +221,13 @@ extern void PREF0 PREF1 SetAggregateBuffer(int16_t handle, int16_t channel, int1
 	g_wrapBufferInfo.bufferSizes[index] = 0;
 	g_wrapBufferInfo.bufferSizes[index + 1] = 0;
 
-	if(bufferMax != NULL)
+	if (bufferMax != NULL)
 	{
 		g_wrapBufferInfo.appBuffers[index] = bufferMax;
 		g_wrapBufferInfo.bufferSizes[index] = bufferSize;
 	}
 
-	if(bufferMin != NULL)
+	if (bufferMin != NULL)
 	{
 		g_wrapBufferInfo.appBuffers[index + 1] = bufferMin;
 		g_wrapBufferInfo.bufferSizes[index + 1] = bufferSize;
@@ -287,7 +287,7 @@ extern int16_t PREF0 PREF1 FastStreamingReady(int16_t handle)
 extern uint32_t PREF0 PREF1 GetFastStreamingDetails(int16_t handle, int16_t * overflow, uint32_t * triggeredAt,
 		int16_t * triggered, int16_t * auto_stop, int16_t * appBufferFull, uint32_t * startIndex)
 {
-	if(_ready)
+	if (_ready)
 	{
 		*overflow		= _overflow;
 		*triggeredAt	= _triggeredAt;
@@ -327,7 +327,7 @@ extern uint32_t PREF0 PREF1 GetFastStreamingDetails(int16_t handle, int16_t * ov
 ****************************************************************************/
 extern void PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledChannels)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
 		memcpy_s((int16_t *)_enabledChannels, DUAL_SCOPE * sizeof(int16_t), 
 			(int16_t *)enabledChannels, DUAL_SCOPE * sizeof(int16_t));

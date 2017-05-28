@@ -173,7 +173,7 @@ extern PICO_STATUS PREF0 PREF1 GetStreamingLatestValues(int16_t handle)
 ****************************************************************************/
 extern uint32_t PREF0 PREF1 AvailableData(int16_t handle, uint32_t *startIndex)
 {
-	if( _ready ) 
+	if ( _ready ) 
 	{
 		*startIndex = _startIndex;
 		return _numSamples;
@@ -200,7 +200,7 @@ extern uint32_t PREF0 PREF1 AvailableData(int16_t handle, uint32_t *startIndex)
 ****************************************************************************/
 extern int16_t PREF0 PREF1 AutoStopped(int16_t handle)
 {
-	if( _ready) 
+	if ( _ready) 
 	{
 		return _autoStop;
 	}
@@ -300,9 +300,9 @@ extern int16_t PREF0 PREF1 ClearTriggerReady(int16_t handle)
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCount)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(channelCount > 0 && channelCount <= PS4000A_MAX_CHANNELS)
+		if (channelCount > 0 && channelCount <= PS4000A_MAX_CHANNELS)
 		{
 			_channelCount = channelCount;
 
@@ -340,9 +340,9 @@ extern PICO_STATUS PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCo
 extern PICO_STATUS PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledChannels)
 {
 
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(_channelCount > 0 && _channelCount <= PS4000A_MAX_CHANNELS)
+		if (_channelCount > 0 && _channelCount <= PS4000A_MAX_CHANNELS)
 		{
 			memcpy_s((int16_t *)_enabledChannels, PS4000A_MAX_CHANNELS * sizeof(int16_t), 
 				(int16_t *)enabledChannels, PS4000A_MAX_CHANNELS * sizeof(int16_t));
@@ -385,9 +385,9 @@ extern PICO_STATUS PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enab
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 setAppAndDriverBuffers(int16_t handle, int16_t channel, int16_t * appBuffer, int16_t * driverBuffer, int32_t bufferLength)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(channel < PS4000A_CHANNEL_A || channel >= _channelCount)
+		if (channel < PS4000A_CHANNEL_A || channel >= _channelCount)
 		{
 			return PICO_INVALID_CHANNEL;
 		}
@@ -435,9 +435,9 @@ extern PICO_STATUS PREF0 PREF1 setAppAndDriverBuffers(int16_t handle, int16_t ch
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 setMaxMinAppAndDriverBuffers(int16_t handle, int16_t channel, int16_t * appMaxBuffer, int16_t * appMinBuffer, int16_t * driverMaxBuffer, int16_t * driverMinBuffer, int32_t bufferLength)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
-		if(channel < PS4000A_CHANNEL_A || channel >= _channelCount)
+		if (channel < PS4000A_CHANNEL_A || channel >= _channelCount)
 		{
 			return PICO_INVALID_CHANNEL;
 		}

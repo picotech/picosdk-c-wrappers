@@ -95,15 +95,15 @@ void PREF1 StreamingCallback(
 		}
 
 		// Digital channels
-		if(g_digitalPortCount > 0)
+		if (g_digitalPortCount > 0)
 		{
 			// Use index 0 to indicate Digital Port 0
 			for(digitalPort = (int16_t) PS2000A_WRAP_DIGITAL_PORT0; digitalPort < g_digitalPortCount; digitalPort++)
 			{
-				if(g_enabledDigitalPorts[digitalPort])
+				if (g_enabledDigitalPorts[digitalPort])
 				{
 					// Copy data...
-					if(wrapBufferInfo->appDigiBuffers && wrapBufferInfo->driverDigiBuffers)
+					if (wrapBufferInfo->appDigiBuffers && wrapBufferInfo->driverDigiBuffers)
 					{
 						// Max digital buffers
 						if (wrapBufferInfo->appDigiBuffers[digitalPort * 2]  && wrapBufferInfo->driverDigiBuffers[digitalPort * 2])
@@ -151,10 +151,10 @@ void PREF1 BlockCallback(int16_t handle, PICO_STATUS status, void * pParameter)
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* preTriggerSamples � see noOfPreTriggerSamples in ps2000aRunBlock.
-* postTriggerSamples � see noOfPreTriggerSamples in ps2000aRunBlock.
-* timebase � see ps2000aRunBlock.
-* segmentIndex � see ps2000aRunBlock.
+* preTriggerSamples - see noOfPreTriggerSamples in ps2000aRunBlock.
+* postTriggerSamples - see noOfPreTriggerSamples in ps2000aRunBlock.
+* timebase - see ps2000aRunBlock.
+* segmentIndex - see ps2000aRunBlock.
 *
 * Returns:
 *
@@ -232,7 +232,7 @@ extern int32_t PREF0 PREF1 AvailableData(int16_t handle, uint32_t *startIndex)
 *
 * Indicates if the device has stopped on collection of the number of samples 
 * specified in the call to the ps2000aRunStreaming function (if the 
-* ps2000aRunStreaming function�s autostop flag is set).
+* ps2000aRunStreaming function's autostop flag is set).
 *
 * Input Arguments:
 *
@@ -266,8 +266,8 @@ extern int16_t PREF0 PREF1 AutoStopped(int16_t handle)
 *
 * Returns:
 *
-* 0 � Data is not yet available.
-* Non-zero � Data is ready to be collected.
+* 0 - Data is not yet available.
+* Non-zero - Data is ready to be collected.
 *
 ****************************************************************************/
 extern int16_t PREF0 PREF1 IsReady(int16_t handle)
@@ -284,13 +284,13 @@ extern int16_t PREF0 PREF1 IsReady(int16_t handle)
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* triggeredAt � on exit, the index of the sample in the buffer where the 
+* triggeredAt - on exit, the index of the sample in the buffer where the 
 * trigger occurred.
 *
 * Returns:
 *
-* 0 � The device has not triggered.
-* Non-zero � The device has been triggered.
+* 0 - The device has not triggered.
+* Non-zero - The device has been triggered.
 *
 ****************************************************************************/
 extern int16_t PREF0 PREF1 IsTriggerReady(int16_t handle, uint32_t *triggeredAt)
@@ -338,9 +338,9 @@ extern PICO_STATUS PREF0 PREF1 ClearTriggerReady(int16_t handle)
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* conditionsArray � an array of integer values specifying the conditions 
+* conditionsArray - an array of integer values specifying the conditions 
 *					for each channel.
-* nConditions � the number that will be passed after the wrapper code has 
+* nConditions - the number that will be passed after the wrapper code has 
 * created its structures. (i.e. the number of conditionsArray elements / 8)
 *
 * Returns:
@@ -389,15 +389,15 @@ extern PICO_STATUS PREF0 PREF1 SetTriggerConditions(int16_t handle, uint32_t *co
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* propertiesArray � an array of sets of integers corresponding to 
+* propertiesArray - an array of sets of integers corresponding to 
 *					PS2000A_TRIGGER_CHANNEL_PROPERTIES structures describing 
 *					the required properties to be set. See also 
 *					channelProperties in ps2000aSetTriggerChannelProperties.
 *
-* nProperties � the number that will be passed after the wrapper code has 
+* nProperties - the number that will be passed after the wrapper code has 
 *				created its structures. (i.e. the number of propertiesArray 
 *				elements / 6)
-* autoTrig � see autoTriggerMilliseconds in ps2000aSetTriggerChannelProperties.
+* autoTrig - see autoTriggerMilliseconds in ps2000aSetTriggerChannelProperties.
 *
 *
 * Returns:
@@ -447,12 +447,12 @@ extern PICO_STATUS PREF0 PREF1 SetTriggerProperties(
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* pwqConditionsArray � an array of sets of integers corresponding to 
+* pwqConditionsArray - an array of sets of integers corresponding to 
 *					PS2000A_PWQ_CONDITIONS structures describing the 
 *					required conditions to be set. See also conditions
 *					in ps2000aSetPulseWidthQualifier.
 *
-* nConditions � the number that will be passed after the wrapper code has 
+* nConditions - the number that will be passed after the wrapper code has 
 *				created its structures. (i.e. the number of conditionsArray 
 *				elements / 7)
 *

@@ -93,15 +93,15 @@ void PREF1 StreamingCallback(
 		}
 
 		// Digital channels
-		if(wrapUnitInfo->digitalPortCount > 0)
+		if (wrapUnitInfo->digitalPortCount > 0)
 		{
 			// Use index 0 to indicate Digital Port 0
-			for(digitalPort = (int16_t) PS3000A_WRAP_DIGITAL_PORT0; digitalPort < wrapUnitInfo->digitalPortCount; digitalPort++)
+			for (digitalPort = (int16_t) PS3000A_WRAP_DIGITAL_PORT0; digitalPort < wrapUnitInfo->digitalPortCount; digitalPort++)
 			{
-				if(wrapUnitInfo->enabledDigitalPorts[digitalPort])
+				if (wrapUnitInfo->enabledDigitalPorts[digitalPort])
 				{
 					// Copy data...
-					if(wrapUnitInfo->appDigiBuffers && wrapUnitInfo->driverDigiBuffers)
+					if (wrapUnitInfo->appDigiBuffers && wrapUnitInfo->driverDigiBuffers)
 					{
 						// Max digital buffers
 						if (wrapUnitInfo->appDigiBuffers[digitalPort * 2]  && wrapUnitInfo->driverDigiBuffers[digitalPort * 2])
@@ -146,7 +146,7 @@ void PREF1 BlockCallback(int16_t handle, PICO_STATUS status, void * pParameter)
 *
 * Indicates if the device has stopped on collection of the number of samples 
 * specified in the call to the ps3000aRunStreaming function (if the 
-* ps3000aRunStreaming function�s autostop flag is set).
+* ps3000aRunStreaming function's autostop flag is set).
 *
 * Input Arguments:
 *
@@ -163,9 +163,9 @@ extern int16_t PREF0 PREF1 AutoStopped(uint16_t deviceIndex)
 {
 	int16_t autoStop = 0;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
-		if( g_deviceInfo[deviceIndex].ready ) 
+		if ( g_deviceInfo[deviceIndex].ready ) 
 		{
 			autoStop = g_deviceInfo[deviceIndex].autoStop;
 		}
@@ -199,13 +199,13 @@ extern uint32_t PREF0 PREF1 AvailableData(uint16_t deviceIndex, uint32_t *startI
 {
 	uint32_t numSamples = 0;
 
-	if(deviceIndex < 0 || deviceIndex >= g_nextDeviceIndex)
+	if (deviceIndex < 0 || deviceIndex >= g_nextDeviceIndex)
 	{
 		numSamples = 0;
 	}
 	else
 	{
-		if( g_deviceInfo[deviceIndex].ready ) 
+		if ( g_deviceInfo[deviceIndex].ready ) 
 		{
 			*startIndex = g_deviceInfo[deviceIndex].startIndex;
 			numSamples = g_deviceInfo[deviceIndex].numSamples;
@@ -236,7 +236,7 @@ extern PICO_STATUS PREF0 PREF1 ClearTriggerReady(uint16_t deviceIndex)
 {
 	PICO_STATUS status = PICO_OK;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
 		g_deviceInfo[deviceIndex].triggered = FALSE;
 		g_deviceInfo[deviceIndex].triggeredAt = 0;
@@ -273,7 +273,7 @@ extern PICO_STATUS PREF0 PREF1 decrementDeviceCount(uint16_t deviceIndex)
 {
 	PICO_STATUS status = PICO_OK;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
 		//Reset parameters
 		g_deviceInfo[deviceIndex].handle = 0;
@@ -338,7 +338,7 @@ extern PICO_STATUS PREF0 PREF1 GetStreamingLatestValues(uint16_t deviceIndex)
 {
 	PICO_STATUS status;
 
-	if(deviceIndex < 0 || deviceIndex >= g_nextDeviceIndex)
+	if (deviceIndex < 0 || deviceIndex >= g_nextDeviceIndex)
 	{
 		status = PICO_INVALID_PARAMETER;
 	}
@@ -386,11 +386,11 @@ extern PICO_STATUS PREF0 PREF1 initWrapUnitInfo(int16_t handle, uint16_t * devic
 	struct tWrapUnitInfo wrapUnitInfo;
 	uint16_t devIndex = g_nextDeviceIndex;
 
-	if(handle <= 0)
+	if (handle <= 0)
 	{
 		status = PICO_INVALID_HANDLE;
 	}
-	else if(devIndex == WRAP_MAX_PICO_DEVICES)
+	else if (devIndex == WRAP_MAX_PICO_DEVICES)
 	{
 		status = PICO_MAX_UNITS_OPENED;
 	}
@@ -425,15 +425,15 @@ extern PICO_STATUS PREF0 PREF1 initWrapUnitInfo(int16_t handle, uint16_t * devic
 *
 * Returns:
 *
-* 0 � Data is not yet available or deviceIndex is out of range.
-* Non-zero � Data is ready to be collected.
+* 0 - Data is not yet available or deviceIndex is out of range.
+* Non-zero - Data is ready to be collected.
 *
 ****************************************************************************/
 extern int16_t PREF0 PREF1 IsReady(uint16_t deviceIndex)
 {
 	int16_t ready = 0;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
 		ready = g_deviceInfo[deviceIndex].ready;
 	}
@@ -451,14 +451,14 @@ extern int16_t PREF0 PREF1 IsReady(uint16_t deviceIndex)
 *
 * deviceIndex - the index assigned by the wrapper corresponding to the 
 *				required device.
-* triggeredAt � on exit, the index of the sample in the buffer where the 
+* triggeredAt - on exit, the index of the sample in the buffer where the 
 *				trigger occurred, relative to the first valid sample index.
 *				This value will be set to 0, when triggered is returned as 0.
 *
 * Returns:
 *
-* 0 � The device has not triggered, or deviceIndex is invalid.
-* Non-zero � The device has been triggered.
+* 0 - The device has not triggered, or deviceIndex is invalid.
+* Non-zero - The device has been triggered.
 *
 ****************************************************************************/
 extern int16_t PREF0 PREF1 IsTriggerReady(uint16_t deviceIndex, uint32_t *triggeredAt)
@@ -466,7 +466,7 @@ extern int16_t PREF0 PREF1 IsTriggerReady(uint16_t deviceIndex, uint32_t *trigge
 	int16_t triggered = 0;
 	*triggeredAt = 0;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
 		if (g_deviceInfo[deviceIndex].triggered)
 		{
@@ -489,10 +489,10 @@ extern int16_t PREF0 PREF1 IsTriggerReady(uint16_t deviceIndex, uint32_t *trigge
 *
 * deviceIndex - the index assigned by the wrapper corresponding to the 
 *				required device.
-* preTriggerSamples � see noOfPreTriggerSamples in ps3000aRunBlock.
-* postTriggerSamples � see noOfPreTriggerSamples in ps3000aRunBlock.
-* timebase � see ps3000aRunBlock.
-* segmentIndex � see ps3000aRunBlock.
+* preTriggerSamples - see noOfPreTriggerSamples in ps3000aRunBlock.
+* postTriggerSamples - see noOfPreTriggerSamples in ps3000aRunBlock.
+* timebase - see ps3000aRunBlock.
+* segmentIndex - see ps3000aRunBlock.
 *
 * Returns:
 *
@@ -506,7 +506,7 @@ extern PICO_STATUS PREF0 PREF1 RunBlock(uint16_t deviceIndex, int32_t preTrigger
 	PICO_STATUS status = PICO_OK;
 	int16_t oversample = 1;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
 		g_deviceInfo[deviceIndex].ready = 0;
 		g_deviceInfo[deviceIndex].numSamples = preTriggerSamples + postTriggerSamples;
@@ -550,9 +550,9 @@ extern PICO_STATUS PREF0 PREF1 setAppAndDriverBuffers(uint16_t deviceIndex, int1
 {
 	PICO_STATUS status = PICO_OK;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
-		if(channel >= PS3000A_CHANNEL_A && channel < g_deviceInfo[deviceIndex].channelCount)
+		if (channel >= PS3000A_CHANNEL_A && channel < g_deviceInfo[deviceIndex].channelCount)
 		{
 			g_deviceInfo[deviceIndex].appBuffers[channel * 2] = appBuffer;
 			g_deviceInfo[deviceIndex].driverBuffers[channel * 2] = driverBuffer;
@@ -603,9 +603,9 @@ extern PICO_STATUS PREF0 PREF1 setMaxMinAppAndDriverBuffers(uint16_t deviceIndex
 {
 	PICO_STATUS status = PICO_OK;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
-		if(channel >= PS3000A_CHANNEL_A && channel < g_deviceInfo[deviceIndex].channelCount)
+		if (channel >= PS3000A_CHANNEL_A && channel < g_deviceInfo[deviceIndex].channelCount)
 		{
 			g_deviceInfo[deviceIndex].appBuffers[channel * 2] = appMaxBuffer;
 			g_deviceInfo[deviceIndex].driverBuffers[channel * 2] = driverMaxBuffer;
@@ -657,9 +657,9 @@ extern PICO_STATUS PREF0 PREF1 setAppAndDriverDigiBuffers(uint16_t deviceIndex, 
 {
 	PICO_STATUS status = PICO_OK;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
-		if(digiPort == PS3000A_WRAP_DIGITAL_PORT0 || digiPort == PS3000A_WRAP_DIGITAL_PORT1)
+		if (digiPort == PS3000A_WRAP_DIGITAL_PORT0 || digiPort == PS3000A_WRAP_DIGITAL_PORT1)
 		{
 			g_deviceInfo[deviceIndex].appDigiBuffers[digiPort * 2] = appDigiBuffer;
 			g_deviceInfo[deviceIndex].driverDigiBuffers[digiPort * 2] = driverDigiBuffer;
@@ -711,9 +711,9 @@ extern PICO_STATUS PREF0 PREF1 setMaxMinAppAndDriverDigiBuffers(uint16_t deviceI
 {
 	PICO_STATUS status = PICO_OK;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
-		if(digiPort == PS3000A_WRAP_DIGITAL_PORT0 || digiPort == PS3000A_WRAP_DIGITAL_PORT1)
+		if (digiPort == PS3000A_WRAP_DIGITAL_PORT0 || digiPort == PS3000A_WRAP_DIGITAL_PORT1)
 		{
 			g_deviceInfo[deviceIndex].appDigiBuffers[digiPort * 2] = appMaxDigiBuffer;
 			g_deviceInfo[deviceIndex].driverDigiBuffers[digiPort * 2] = driverMaxDigiBuffer;
@@ -760,9 +760,9 @@ extern PICO_STATUS PREF0 PREF1 setChannelCount(uint16_t deviceIndex, int16_t cha
 {
 	PICO_STATUS status = PICO_OK;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
-		if(channelCount == DUAL_SCOPE || channelCount == PS3000A_MAX_CHANNELS)
+		if (channelCount == DUAL_SCOPE || channelCount == PS3000A_MAX_CHANNELS)
 		{
 			g_deviceInfo[deviceIndex].channelCount = channelCount;
 
@@ -806,9 +806,9 @@ extern PICO_STATUS PREF0 PREF1 setEnabledChannels(uint16_t deviceIndex, int16_t 
 {
 	PICO_STATUS status = PICO_OK;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
-		if(g_deviceInfo[deviceIndex].channelCount == DUAL_SCOPE || g_deviceInfo[deviceIndex].channelCount == PS3000A_MAX_CHANNELS)
+		if (g_deviceInfo[deviceIndex].channelCount == DUAL_SCOPE || g_deviceInfo[deviceIndex].channelCount == PS3000A_MAX_CHANNELS)
 		{
 			memcpy_s((int16_t *) g_deviceInfo[deviceIndex].enabledChannels, PS3000A_MAX_CHANNELS * sizeof(int16_t), 
 				(int16_t *) enabledChannels, PS3000A_MAX_CHANNELS * sizeof(int16_t));
@@ -854,9 +854,9 @@ extern PICO_STATUS PREF0 PREF1 setDigitalPortCount(uint16_t deviceIndex, int16_t
 {
 	PICO_STATUS status = PICO_OK;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
-		if(digitalPortCount == 0 || digitalPortCount == DUAL_PORT_MSO || digitalPortCount == PS3000A_MAX_DIGITAL_PORTS)
+		if (digitalPortCount == 0 || digitalPortCount == DUAL_PORT_MSO || digitalPortCount == PS3000A_MAX_DIGITAL_PORTS)
 		{
 			g_deviceInfo[deviceIndex].digitalPortCount = digitalPortCount;
 
@@ -903,9 +903,9 @@ extern PICO_STATUS PREF0 PREF1 setEnabledDigitalPorts(uint16_t deviceIndex, int1
 
 	int16_t digiPortCount = g_deviceInfo[deviceIndex].digitalPortCount;
 
-	if(deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
+	if (deviceIndex >= 0 && deviceIndex < g_nextDeviceIndex)
 	{
-		if(digiPortCount == 0 || digiPortCount == DUAL_PORT_MSO || digiPortCount == PS3000A_MAX_DIGITAL_PORTS)
+		if (digiPortCount == 0 || digiPortCount == DUAL_PORT_MSO || digiPortCount == PS3000A_MAX_DIGITAL_PORTS)
 		{
 			memcpy_s((int16_t *) g_deviceInfo[deviceIndex].enabledDigitalPorts, PS3000A_MAX_DIGITAL_PORTS * sizeof(int16_t), 
 				(int16_t *) enabledDigitalPorts, PS3000A_MAX_DIGITAL_PORTS * sizeof(int16_t));
@@ -940,9 +940,9 @@ extern PICO_STATUS PREF0 PREF1 setEnabledDigitalPorts(uint16_t deviceIndex, int1
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* pwqConditionsArray � an array of integer values specifying the conditions 
+* pwqConditionsArray - an array of integer values specifying the conditions 
 *					for each channel.
-* nConditions � the number that will be passed after the wrapper code has 
+* nConditions - the number that will be passed after the wrapper code has 
 *				created its structures. (i.e. the number of 
 *				pwqConditionsArray elements / 6)
 * direction - the direction of the signal required for the pulse width
@@ -967,7 +967,7 @@ extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifier(int16_t handle, uint32_t *
 
 	PICO_STATUS status;
 
-	for(i = 0; i < nConditions; i++)
+	for (i = 0; i < nConditions; i++)
 	{
 		pwqConditions[i].channelA = (PS3000A_TRIGGER_STATE) pwqConditionsArray[j];
 		pwqConditions[i].channelB = (PS3000A_TRIGGER_STATE) pwqConditionsArray[j + 1];
@@ -999,9 +999,9 @@ extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifier(int16_t handle, uint32_t *
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* pwqConditionsArray � an array of integer values specifying the conditions 
+* pwqConditionsArray - an array of integer values specifying the conditions 
 *					for each channel.
-* nConditions � the number that will be passed after the wrapper code has 
+* nConditions - the number that will be passed after the wrapper code has 
 *				created its structures. (i.e. the number of 
 *				pwqConditionsArray elements / 7)
 * direction - the direction of the signal required for the pulse width
@@ -1027,7 +1027,7 @@ extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifierV2( int16_t handle, uint32_
 
 	PICO_STATUS status;
 
-	for(i = 0; i < nConditions; i++)
+	for (i = 0; i < nConditions; i++)
 	{
 		pwqConditionsV2[i].channelA = (PS3000A_TRIGGER_STATE) pwqConditionsArrayV2[j];
 		pwqConditionsV2[i].channelB = (PS3000A_TRIGGER_STATE) pwqConditionsArrayV2[j + 1];
@@ -1059,9 +1059,9 @@ extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifierV2( int16_t handle, uint32_
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* conditionsArray � an array of integer values specifying the conditions 
+* conditionsArray - an array of integer values specifying the conditions 
 *					for each channel.
-* nConditions � the number that will be passed after the wrapper code has 
+* nConditions - the number that will be passed after the wrapper code has 
 *				created its structures. (i.e. the number of conditionsArray 
 *				elements / 7)
 *
@@ -1109,9 +1109,9 @@ extern PICO_STATUS PREF0 PREF1 SetTriggerConditions(int16_t handle, uint32_t *co
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* conditionsArray � an array of integer values specifying the conditions 
+* conditionsArray - an array of integer values specifying the conditions 
 *					for each channel.
-* nConditions � the number that will be passed after the wrapper code has 
+* nConditions - the number that will be passed after the wrapper code has 
 *				created its structures. (i.e. the number of conditionsArray 
 *				elements / 8)
 *
@@ -1161,15 +1161,15 @@ extern PICO_STATUS PREF0 PREF1 SetTriggerConditionsV2(int16_t handle, uint32_t *
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* propertiesArray � an array of sets of integers corresponding to 
+* propertiesArray - an array of sets of integers corresponding to 
 *					PS3000A_TRIGGER_CHANNEL_PROPERTIES structures describing 
 *					the required properties to be set. See also 
 *					channelProperties in ps3000aSetTriggerChannelProperties.
 *
-* nProperties � the number that will be passed after the wrapper code has 
+* nProperties - the number that will be passed after the wrapper code has 
 *				created its structures. (i.e. the number of propertiesArray 
 *				elements / 6)
-* autoTrig � see autoTriggerMilliseconds in ps3000aSetTriggerChannelProperties.
+* autoTrig - see autoTriggerMilliseconds in ps3000aSetTriggerChannelProperties.
 *
 *
 * Returns:
