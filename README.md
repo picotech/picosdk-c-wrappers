@@ -48,11 +48,15 @@ You can download Programmer's Guides providing a description of the API function
 
 ## Obtaining support
 
-Please visit our [Support page](https://www.picotech.com/tech-support) to contact us directly or visit our [Test and Measurement Forum](https://www.picotech.com/support/forum17.html) to post questions.
+Please visit our [Support page](https://www.picotech.com/tech-support) to contact us directly or visit our [Test and Measurement Forum](https://www.picotech.com/support/forum17.html) to post questions. 
+
+## Contributing
+
+Contributions are welcome. Please refer to our [guidelines for contributing](.github/CONTRIBUTING.md) for further information.
 
 ## Copyright and licensing
 
-picosdk-c-examples is Copyright (C) 2006 - 2017 Pico Technology Ltd. All rights reserved. See [LICENSE.md](LICENSE.md) for license terms. 
+See [LICENSE.md](LICENSE.md) for license terms. 
 
 *PicoScope* is a registered trademark of Pico Technology Ltd. 
 
@@ -66,7 +70,5 @@ picosdk-c-examples is Copyright (C) 2006 - 2017 Pico Technology Ltd. All rights 
 
 *Linux* is the registered trademark of Linus Torvalds in the U.S. and other countries.
 
-## Contributing
-
-Contributions are welcome. Please refer to our [guidelines for contributing](.github/CONTRIBUTING.md) for further information.
+Copyright © 2006-2017 Pico Technology Ltd. All rights reserved.
 
