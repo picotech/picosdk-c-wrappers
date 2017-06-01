@@ -15,3 +15,12 @@ EXPORTS
 	setTriggerDirections = _setTriggerDirections@12
 	setTriggerProperties = _setTriggerProperties@16
 	setPulseWidthQualifierConditions = _setPulseWidthQualifierConditions@16
+	setProbeInteractionCallback = _setProbeInteractionCallback@4
+	hasProbeStateChanged = _hasProbeStateChanged@8
+	clearProbeStateChanged = _clearProbeStateChanged@4
+	getUserProbeInteractionsInfo = _getUserProbeInteractionsInfo@12
+	getNumberOfProbes = _getNumberOfProbes@8
+	getUserProbeTypeInfo = _getUserProbeTypeInfo@32
+	getUserProbeRangeInfo = _getUserProbeRangeInfo@24
+	getUserProbeCouplingInfo = _getUserProbeCouplingInfo@20
+	getUserProbeBandwidthInfo = _getUserProbeBandwidthInfo@20
