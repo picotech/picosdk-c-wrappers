@@ -1,0 +1,13 @@
+LIBRARY	"ps3000wrap"
+EXPORTS
+	GetStreamingLastValues = _GetStreamingLastValues@4
+	IsReady = _IsReady@4
+	AvailableData = _AvailableData@24
+	ClearTriggerInfo = _ClearTriggerInfo@4
+	SetDataBuffer = _SetDataBuffer@16 
+	SetDataBuffers = _SetDataBuffers@16
+	SetDataBuffersV2 = _SetDataBuffersV2@20
+	setChannelCount = _setChannelCount@8
+	setEnabledChannels = _setEnabledChannels@8
+	clearFastStreamingParameters = _clearFastStreamingParameters@4
+	
