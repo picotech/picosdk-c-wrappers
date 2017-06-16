@@ -1,6 +1,6 @@
 # picosdk-c-wrappers
 
-picosdk-c-wrappers is a set of C wrapper library projects for PicoScope oscilloscopes.
+*picosdk-c-wrappers* is a set of C wrapper library projects for PicoScope oscilloscopes.
 
 The wrapper functions provided by the wrapper libraries are for use with programming languages such as MathWorks MATLAB, National Instruments LabVIEW
 and Microsoft Excel VBA that do not support features of the C programming language such as callback functions. The source code contained in the Wrapper projects contains a description of the functions and the input and output parameters.
@@ -30,7 +30,7 @@ Prerequisite files are available for the following platforms. Refer to the subse
 
 **Note:** Built versions of the wrapper libraries are available for each of the platforms mentioned below.
 
-#### Windows
+#### Microsoft Windows
 
 * Download the PicoSDK (32-bit or 64-bit) driver package installer from our [Downloads page](https://www.picotech.com/downloads).
 
