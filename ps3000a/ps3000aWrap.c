@@ -17,7 +17,7 @@
  *  Please refer to the PicoScope 3000 Series (A API) Programmer's Guide
  *  for descriptions of the underlying functions where stated.
  *
- * Copyright (C) 2011 - 2017 Pico Technology Ltd. See LICENSE file for terms.
+ * Copyright (C) 2011-2017 Pico Technology Ltd. See LICENSE file for terms.
  *
  **************************************************************************/
 

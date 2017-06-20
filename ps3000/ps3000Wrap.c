@@ -19,7 +19,7 @@
  *
  *	This wrapper will only support streaming from a single device.
  *
- * Copyright (C) 2010 - 2017 Pico Technology Ltd. See LICENSE file for terms. 
+ * Copyright (C) 2010-2017 Pico Technology Ltd. See LICENSE file for terms. 
  *
  **************************************************************************/
 

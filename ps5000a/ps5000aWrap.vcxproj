@@ -111,6 +111,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProgramFiles)\Pico Technology\SDK\lib;$(ProgramW6432)\Pico Technology\SDK\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>ps5000a.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>ps5000aWrap.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -145,6 +146,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProgramFiles)\Pico Technology\SDK\lib;$(ProgramW6432)\Pico Technology\SDK\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>ps5000a.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>ps5000aWrap.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">

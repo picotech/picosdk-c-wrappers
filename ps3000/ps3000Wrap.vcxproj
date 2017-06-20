@@ -112,6 +112,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalLibraryDirectories>$(ProgramFiles)\Pico Technology\SDK\lib;$(ProgramW6432)\Pico Technology\SDK\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>ps3000.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>ps3000Wrap.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -127,6 +128,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>ps3000.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>$(ProgramW6432)\Pico Technology\SDK\lib</AdditionalLibraryDirectories>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -146,6 +149,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProgramFiles)\Pico Technology\SDK\lib;$(ProgramW6432)\Pico Technology\SDK\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>ps3000.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>ps3000Wrap.def</ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -165,6 +169,8 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProgramW6432)\Pico Technology\SDK\lib</AdditionalLibraryDirectories>
       <AdditionalDependencies>ps3000.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <ModuleDefinitionFile>
+      </ModuleDefinitionFile>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

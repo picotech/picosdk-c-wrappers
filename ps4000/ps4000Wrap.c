@@ -17,7 +17,7 @@
  *   Please refer to the PicoScope 4000 Series Programmer's Guide
  *   for descriptions of the underlying functions where stated.
  *
- * Copyright (C) 2008 - 2017 Pico Technology Ltd. See LICENSE file for terms.
+ * Copyright (C) 2008-2017 Pico Technology Ltd. See LICENSE file for terms.
  *
  **************************************************************************/
 
