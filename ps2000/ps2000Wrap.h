@@ -6,7 +6,7 @@
  *	This header defines the interface to the wrapper library for the 
  *	PicoScope 2000 series of PC Oscilloscopes.
  *
- * Copyright (C) 2009 - 2017 Pico Technology Ltd. See LICENSE file for terms.
+ * Copyright (c) 2009-2017 Pico Technology Ltd. See LICENSE file for terms.
  *
  ****************************************************************************/
 #ifndef __PS2000WRAP_H__
@@ -26,6 +26,22 @@
 #undef PREF1
 #endif
 #define PREF1 __stdcall
+
+#elif _WIN64
+#include "windows.h"
+#include <stdio.h>
+#include "ps2000.h"
+
+#ifdef PREF0
+#undef PREF0
+#endif
+#define PREF0 __declspec(dllexport)
+
+#ifdef PREF1
+#undef PREF1
+#endif
+#define PREF1 __stdcall
+
 #else
 #include <sys/types.h>
 #include <string.h>

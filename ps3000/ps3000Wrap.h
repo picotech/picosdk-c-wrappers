@@ -7,7 +7,7 @@
  * PicoScope 3000 series of PC Oscilloscopes using the PicoScope 3000 Series
  * (ps3000) API functions.
  *
- * Copyright (C) 2010 - 2017 Pico Technology Ltd. See LICENSE file for terms. 
+ * Copyright (C) 2010-2017 Pico Technology Ltd. See LICENSE file for terms. 
  *
  ****************************************************************************/
 #ifndef __PS3000WRAP_H__

@@ -8,9 +8,10 @@
  * PicoScope 4000 series of PC Oscilloscopes using the PicoScope 4000 
  *  Series 'A' API functions.
  *
- * Copyright (C) 2014 - 2017 Pico Technology Ltd. See LICENSE file for terms.
+ * Copyright (C) 2014-2017 Pico Technology Ltd. See LICENSE file for terms.
  *
  ****************************************************************************/
+
 #ifndef __PS4000AWRAP_H__
 #define __PS4000AWRAP_H__
 
@@ -28,6 +29,22 @@
 #undef PREF1
 #endif
 #define PREF1 __stdcall
+
+#elif _WIN64
+#include "windows.h"
+#include <stdio.h>
+#include "ps4000aApi.h"
+
+#ifdef PREF0
+#undef PREF0
+#endif
+#define PREF0 __declspec(dllexport)
+
+#ifdef PREF1
+#undef PREF1
+#endif
+#define PREF1 __stdcall
+
 #else
 #include <sys/types.h>
 #include <string.h>

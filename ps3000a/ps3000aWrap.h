@@ -7,13 +7,29 @@
  *	PicoScope 3000 series of PC Oscilloscopes using the PicoScope 3000 
  *	Series (ps3000a) API functions.
  *
- * Copyright (C) 2011 - 2017 Pico Technology Ltd. See LICENSE file for terms.
+ * Copyright (C) 2011-2017 Pico Technology Ltd. See LICENSE file for terms.
  *
  ****************************************************************************/
+
 #ifndef __PS3000AWRAP_H__
 #define __PS3000AWRAP_H__
 
 #ifdef WIN32
+#include "windows.h"
+#include <stdio.h>
+#include "ps3000aApi.h"
+
+#ifdef PREF0
+#undef PREF0
+#endif
+#define PREF0 __declspec(dllexport)
+
+#ifdef PREF1
+#undef PREF1
+#endif
+#define PREF1 __stdcall
+
+#elif _WIN64
 #include "windows.h"
 #include <stdio.h>
 #include "ps3000aApi.h"

@@ -7,11 +7,12 @@
  * This header defines the interface to the wrapper dll for the 
  *	PicoScope 5000 series of PC Oscilloscopes (PicoScope 5203 and 5204)
  *
- * Copyright (C) 2006 - 2017 Pico Technology Ltd. See LICENSE file for terms.
+ * Copyright (C) 2006-2017 Pico Technology Ltd. See LICENSE file for terms.
  *
  ****************************************************************************/
 #ifndef __PS5000WRAP_H__
 #define __PS5000WRAP_H__
+
 #ifdef WIN32
 #include "windows.h"
 #include <stdio.h>
@@ -26,6 +27,22 @@
 #undef PREF1
 #endif
 #define PREF1 __stdcall
+
+#elif _WIN64
+#include "windows.h"
+#include <stdio.h>
+#include "ps5000Api.h"
+
+#ifdef PREF0
+#undef PREF0
+#endif
+#define PREF0 __declspec(dllexport)
+
+#ifdef PREF1
+#undef PREF1
+#endif
+#define PREF1 __stdcall
+
 #else
 #include <sys/types.h>
 #include <string.h>

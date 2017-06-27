@@ -7,9 +7,10 @@
  * PicoScope 2000 series of PC Oscilloscopes using the PicoScope 2000 Series
  * A API.
  *
- * Copyright (C) 2011 - 2017 Pico Technology Ltd. See LICENSE file for terms.
+ * Copyright (C) 2011-2017 Pico Technology Ltd. See LICENSE file for terms.
  *
  ****************************************************************************/
+
 #ifndef __PS2000AWRAP_H__
 #define __PS2000AWRAP_H__
 
@@ -27,6 +28,22 @@
 #undef PREF1
 #endif
 #define PREF1 __stdcall
+
+#elif _WIN64
+#include "windows.h"
+#include <stdio.h>
+#include "ps2000aApi.h"
+
+#ifdef PREF0
+#undef PREF0
+#endif
+#define PREF0 __declspec(dllexport)
+
+#ifdef PREF1
+#undef PREF1
+#endif
+#define PREF1 __stdcall
+
 #else
 #include <sys/types.h>
 #include <string.h>
