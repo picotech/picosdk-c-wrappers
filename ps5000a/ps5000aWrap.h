@@ -8,7 +8,7 @@
  * PicoScope 5000 series of PC Oscilloscopes using the ps5000a API 
  * functions.
  *
- * Copyright (C) 2013-2017 Pico Technology Ltd. See LICENSE file for terms.
+ * Copyright (C) 2013-2018 Pico Technology Ltd. See LICENSE file for terms.
  *
  ****************************************************************************/
 
@@ -68,12 +68,14 @@ typedef enum enBOOL
 } BOOL;
 #endif
 
+#define PS5000A_WRAP_MAX_CHANNEL_BUFFERS (2 * PS5000A_MAX_CHANNELS)
+
 int16_t		_ready;
 int16_t		_autoStop;
 uint32_t	_numSamples;
 uint32_t	_triggeredAt = 0;
 int16_t		_triggered = FALSE;
-uint32_t	_startIndex;
+uint32_t	_startIndex;				// Start index in driver data buffer
 int16_t		_overflow = 0;
 
 int16_t		_channelCount = 0; // Should be set to 2 or 4 from the main application
@@ -81,9 +83,9 @@ int16_t		_enabledChannels[PS5000A_MAX_CHANNELS] = {0, 0, 0, 0}; // Keep a record
 
 typedef struct tWrapBufferInfo
 {
-	int16_t *driverBuffers[PS5000A_MAX_CHANNEL_BUFFERS];
-	int16_t *appBuffers[PS5000A_MAX_CHANNEL_BUFFERS];
-	uint32_t bufferLengths[PS5000A_MAX_CHANNELS];
+	int16_t *driverBuffers[PS5000A_WRAP_MAX_CHANNEL_BUFFERS]; // The buffers registered with the driver
+	int16_t *appBuffers[PS5000A_WRAP_MAX_CHANNEL_BUFFERS];		// Application buffers to copy the driver data into
+	uint32_t bufferLengths[PS5000A_MAX_CHANNELS];							// Buffer lengths
 
 } WRAP_BUFFER_INFO;
 
