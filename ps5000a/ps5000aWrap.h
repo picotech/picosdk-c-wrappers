@@ -151,7 +151,7 @@ extern int16_t PREF0 PREF1 IsTriggerReady
 	uint32_t *triggeredAt
 );
 
-extern int16_t PREF0 PREF1 ClearTriggerReady
+extern PICO_STATUS PREF0 PREF1 ClearTriggerReady
 (
 	int16_t handle
 );
