@@ -68,7 +68,10 @@ typedef enum enBOOL
 } BOOL;
 #endif
 
-#define PS5000A_WRAP_MAX_CHANNEL_BUFFERS (2 * PS5000A_MAX_CHANNELS)
+#define PS5000A_WRAP_MAX_CHANNEL_BUFFERS		(2 * PS5000A_MAX_CHANNELS)
+#define PS5000A_WRAP_MAX_DIGITAL_PORTS			2
+#define PS5000A_WRAP_MAX_DIGITAL_BUFFERS		4  // 4 - Port 0 Max/Min and Port 1 Max/Min
+
 
 int16_t		_ready;
 int16_t		_autoStop;
@@ -81,15 +84,30 @@ int16_t		_overflow = 0;
 int16_t		_channelCount = 0; // Should be set to 2 or 4 from the main application
 int16_t		_enabledChannels[PS5000A_MAX_CHANNELS] = {0, 0, 0, 0}; // Keep a record of the channels that are enabled
 
+int16_t		_digitalPortCount = 0;																							// Should be set to 2 from the main application
+int16_t		_enabledDigitalPorts[PS5000A_WRAP_MAX_DIGITAL_PORTS] = { 0, 0 };		// Keep a record of the channels that are enabled
+
 typedef struct tWrapBufferInfo
 {
-	int16_t *driverBuffers[PS5000A_WRAP_MAX_CHANNEL_BUFFERS]; // The buffers registered with the driver
-	int16_t *appBuffers[PS5000A_WRAP_MAX_CHANNEL_BUFFERS];		// Application buffers to copy the driver data into
-	uint32_t bufferLengths[PS5000A_MAX_CHANNELS];							// Buffer lengths
+	int16_t *driverBuffers[PS5000A_WRAP_MAX_CHANNEL_BUFFERS];					// The buffers registered with the driver
+	int16_t *appBuffers[PS5000A_WRAP_MAX_CHANNEL_BUFFERS];						// Application buffers to copy the driver data into
+	uint32_t bufferLengths[PS5000A_MAX_CHANNELS];											// Buffer lengths
+
+																																		// Digital ports
+	int16_t *driverDigiBuffers[PS5000A_WRAP_MAX_DIGITAL_BUFFERS];			// The buffers registered with the driver for the digital ports
+	int16_t *appDigiBuffers[PS5000A_WRAP_MAX_DIGITAL_BUFFERS];				// Application buffers to copy the driver digital data into
+	uint32_t digiBufferLengths[PS5000A_WRAP_MAX_DIGITAL_BUFFERS];			// Buffer lengths for digital ports - only 2 ports.
 
 } WRAP_BUFFER_INFO;
 
 WRAP_BUFFER_INFO _wrapBufferInfo;
+
+// Enum to define Digital Port indices
+typedef enum enPS5000AWrapDigitalPortIndex
+{
+		PS5000A_WRAP_DIGITAL_PORT0,
+		PS5000A_WRAP_DIGITAL_PORT1
+} PS5000A_WRAP_DIGITAL_PORT_INDEX;
 
 /////////////////////////////////
 //
@@ -164,31 +182,31 @@ extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifier
 	int32_t type
 );
 
-extern void PREF0 PREF1 setChannelCount
+extern PICO_STATUS PREF0 PREF1 setChannelCount
 (
 	int16_t handle, 
 	int16_t channelCount
 );
 
-extern int16_t PREF0 PREF1 setEnabledChannels
+extern PICO_STATUS PREF0 PREF1 setEnabledChannels
 (
 	int16_t handle, 
 	int16_t * enabledChannels
 );
 
-extern int16_t PREF0 PREF1 setAppAndDriverBuffers
+extern PICO_STATUS PREF0 PREF1 setAppAndDriverBuffers
 (
 	int16_t handle, 
-	int16_t channel, 
+	PS5000A_CHANNEL channel, 
 	int16_t * appBuffer, 
 	int16_t * driverBuffer,
 	uint32_t bufferLength
 );
 
-extern int16_t PREF0 PREF1 setMaxMinAppAndDriverBuffers
+extern PICO_STATUS PREF0 PREF1 setMaxMinAppAndDriverBuffers
 (
 	int16_t handle, 
-	int16_t channel, 
+	PS5000A_CHANNEL channel, 
 	int16_t * appMaxBuffer,
 	int16_t * appMinBuffer, 
 	int16_t * driverMaxBuffer, 
@@ -196,4 +214,15 @@ extern int16_t PREF0 PREF1 setMaxMinAppAndDriverBuffers
 	uint32_t bufferLength
 );
 
+extern PICO_STATUS PREF0 PREF1 setEnabledDigitalPorts
+(
+		int16_t handle,
+		int16_t * enabledDigitalPorts
+);
+
+extern PICO_STATUS PREF0 PREF1 getOverflow
+(
+		int16_t handle,
+		int16_t * overflow
+);
 #endif

@@ -3,7 +3,7 @@
  * Filename: ps5000aWrap.c
  *
  * Description:
- *   The source code in this release is for use with Pico products when 
+ *  The source code in this release is for use with Pico products when 
  *	interfaced with Microsoft Excel VBA, National Instruments LabVIEW and 
  *	MathWorks MATLAB or any third-party programming language or application 
  *	that is unable to support C-style callback functions or structures.
@@ -14,10 +14,10 @@
  *	guarantee that they will work with the above-listed programming 
  *	languages or third-party products.
  *
- *   Please refer to the PicoScope 5000 Series (A API) Programmer's Guide
- *   for descriptions of the underlying functions where stated.
+ *  Please refer to the PicoScope 5000 Series (A API) Programmer's Guide
+ *  for descriptions of the underlying functions where stated.
  *
- * Copyright (C) 2013-2017 Pico Technology Ltd. See LICENSE file for terms.
+ * Copyright (C) 2013-2018 Pico Technology Ltd. See LICENSE file for terms.
  *
  **************************************************************************/
 
@@ -46,6 +46,7 @@ void PREF1 StreamingCallback(
 	void * pParameter)
 {
 	int16_t channel = 0;
+	int16_t digitalPort = 0;
 	WRAP_BUFFER_INFO * _wrapBufferInfo = NULL;
 	
 	if (pParameter != NULL)
@@ -64,6 +65,7 @@ void PREF1 StreamingCallback(
 
 	if (_wrapBufferInfo != NULL && noOfSamples)
 	{
+		// Analogue channels
 		for (channel = (int16_t) PS5000A_CHANNEL_A; channel < _channelCount; channel++)
 		{
 			if (_enabledChannels[channel])
@@ -82,6 +84,35 @@ void PREF1 StreamingCallback(
 					{
 						memcpy_s (&_wrapBufferInfo->appBuffers[channel * 2 + 1][startIndex], noOfSamples * sizeof(int16_t),
 							&_wrapBufferInfo->driverBuffers[channel * 2 + 1][startIndex], noOfSamples * sizeof(int16_t));
+					}
+				}
+			}
+		}
+
+		// Digital channels
+		if (_digitalPortCount > 0)
+		{
+			// Use index 0 to indicate Digital Port 0
+			for (digitalPort = (int16_t)PS5000A_WRAP_DIGITAL_PORT0; digitalPort < _digitalPortCount; digitalPort++)
+			{
+				if (_enabledDigitalPorts[digitalPort])
+				{
+					// Copy data...
+					if (_wrapBufferInfo->appDigiBuffers && _wrapBufferInfo->driverDigiBuffers)
+					{
+						// Max digital buffers
+						if (_wrapBufferInfo->appDigiBuffers[digitalPort * 2] && _wrapBufferInfo->driverDigiBuffers[digitalPort * 2])
+						{
+								memcpy_s(&_wrapBufferInfo->appDigiBuffers[digitalPort * 2][startIndex], noOfSamples * sizeof(int16_t),
+										&_wrapBufferInfo->driverDigiBuffers[digitalPort * 2][startIndex], noOfSamples * sizeof(int16_t));
+						}
+
+						// Min digital buffers
+						if (_wrapBufferInfo->appDigiBuffers[digitalPort * 2 + 1] && _wrapBufferInfo->driverDigiBuffers[digitalPort * 2 + 1])
+						{
+								memcpy_s(&_wrapBufferInfo->appDigiBuffers[digitalPort * 2 + 1][startIndex], noOfSamples * sizeof(int16_t),
+										&_wrapBufferInfo->driverDigiBuffers[digitalPort * 2 + 1][startIndex], noOfSamples * sizeof(int16_t));
+						}
 					}
 				}
 			}
@@ -159,7 +190,7 @@ extern PICO_STATUS PREF0 PREF1 GetStreamingLatestValues(int16_t handle)
 }
 
 /****************************************************************************
-* Available Data
+* AvailableData
 *
 * Returns the number of samples returned from the driver and shows 
 * the start index of the data in the buffer when collecting data in 
@@ -468,25 +499,53 @@ extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifier(
 /****************************************************************************
 * setChannelCount
 *
-* Sets the number of channels on the device. This is used to assist with 
+* Sets the number of analogue channels and digital ports on the device.  
 * copying data in the streaming callback.
 *
 * Input Arguments:
 *
 * handle - the device handle.
-* channelCount - the number of channels on the device.
+* channelCount - not used.
 *
+* Returns:
+*
+* See ps5000aGetUnitInfo return values
 ****************************************************************************/
-extern void PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCount)
+extern PICO_STATUS PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCount)
 {
-	_channelCount = channelCount;
+  int8_t variant[15];
+	int16_t requiredSize = 0;
+	PICO_STATUS status = PICO_OK;
+	
+	// Obtain the model number
+	status = ps5000aGetUnitInfo(handle, variant, sizeof(variant), &requiredSize, PICO_VARIANT_INFO);
+	
+	if (status == PICO_OK)
+	{
+			// Set the number of analogue channels
+			_channelCount = (int16_t) variant[1];
+			_channelCount = _channelCount - 48; // Subtract ASCII 0 (48)
+
+			// Determine if the device is an MSO
+			if (strstr(variant, "MSO") != NULL)
+			{
+					_digitalPortCount = 2;
+			}
+			else
+			{
+					_digitalPortCount = 0;
+			}
+
+	}
+
+	return status;
 }
 
 /****************************************************************************
 * setEnabledChannels
 *
-* Sets the number of enabled channels on the device. This is used to assist with 
-* copying data in the streaming callback.
+* Sets the number of enabled analogue channels on the device. This is used to 
+* assist with copying data in the streaming callback.
 *
 * Input Arguments:
 *
@@ -496,10 +555,11 @@ extern void PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCount)
 *
 * Returns:
 *
-* 0 if successful,
-* -1 if handle <= 0 or channelCount is out of range
+* PICO_OK if successful,
+* PICO_INVALID_HANDLE if handle <= 0, or 
+* PICO_INVALID_PARAMETER if channelCount is out of range
 ****************************************************************************/
-extern int16_t PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledChannels)
+extern PICO_STATUS PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledChannels)
 {
 
 	if (handle > 0)
@@ -508,11 +568,16 @@ extern int16_t PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledC
 		{
 			memcpy_s((int16_t *)_enabledChannels, PS5000A_MAX_CHANNELS * sizeof(int16_t), 
 				(int16_t *)enabledChannels, PS5000A_MAX_CHANNELS * sizeof(int16_t));
-			return 0;
+			
+			return PICO_OK;
+		}
+		else
+		{
+				return PICO_INVALID_PARAMETER;
 		}
 	}
 
-	return -1;
+	return PICO_INVALID_HANDLE;
 
 }
 
@@ -520,30 +585,59 @@ extern int16_t PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledC
 * setAppAndDriverBuffers
 *
 * Set the application and corresponding driver buffer in order for the 
-* streaming callback to copy the data for the channel from the driver buffer 
-* to the application buffer.
+* streaming callback to copy the data for the channel/digital port from the 
+* driver buffer to the application buffer.
 *
 * Input Arguments:
 *
 * handle - the device handle.
-* channel - the channel number (should be a PS5000A_CHANNEL enumeration value).
+* channel - the channel/ digital port number (should be a PS5000A_CHANNEL 
+*						enumeration value).
 * appBuffer - the application buffer.
 * driverBuffer - the buffer set by the driver.
 * bufferLength - the length of the buffers (the length of the buffers must be
-*				 equal).
+*								equal).
 *
 * Returns:
 *
-* 0, if successful
-* -1, otherwise
+* PICO_OK, if successful
+* PICO_INVALID_HANDLE, if an invalid handle is used, or 
+* PICO_INVALID_CHANNEL if an invalid channel/digital port is used, or
+* PICO_INVALID_PARAMETER if the bufferLength is less than or equal to 0.
 ****************************************************************************/
-extern int16_t PREF0 PREF1 setAppAndDriverBuffers(int16_t handle, int16_t channel, int16_t * appBuffer, int16_t * driverBuffer, uint32_t bufferLength)
+extern PICO_STATUS PREF0 PREF1 setAppAndDriverBuffers(int16_t handle, PS5000A_CHANNEL channel, int16_t * appBuffer, int16_t * driverBuffer, uint32_t bufferLength)
 {
+  // Map port number to internal enumeration for MSO devices.
+	PS5000A_WRAP_DIGITAL_PORT_INDEX portIndex = PS5000A_WRAP_DIGITAL_PORT0;
+
 	if (handle > 0)
 	{
-		if (channel < PS5000A_CHANNEL_A || channel >= PS5000A_MAX_CHANNELS)
+		if (bufferLength <= 0)
 		{
-			return -1;
+		  return PICO_INVALID_PARAMETER;
+		}
+
+		if (channel == PS5000A_DIGITAL_PORT0 || channel == PS5000A_DIGITAL_PORT1)
+		{
+				if (channel == PS5000A_DIGITAL_PORT0)
+				{
+						portIndex = PS5000A_WRAP_DIGITAL_PORT0;
+				}
+				else
+				{
+						portIndex = PS5000A_WRAP_DIGITAL_PORT1;
+				}
+
+				_wrapBufferInfo.appDigiBuffers[portIndex * 2] = appBuffer;
+				_wrapBufferInfo.driverDigiBuffers[portIndex * 2] = driverBuffer;
+
+				_wrapBufferInfo.digiBufferLengths[portIndex] = bufferLength;
+
+				return PICO_OK;
+		}
+		else if (channel < PS5000A_CHANNEL_A || channel >= PS5000A_MAX_CHANNELS)
+		{
+			return PICO_INVALID_CHANNEL;
 		}
 		else
 		{
@@ -552,47 +646,78 @@ extern int16_t PREF0 PREF1 setAppAndDriverBuffers(int16_t handle, int16_t channe
 				
 			_wrapBufferInfo.bufferLengths[channel] = bufferLength;
 
-			return 0;
+			return PICO_OK;
 		}
 	}
 	else
 	{
-		return -1;
+		return PICO_INVALID_HANDLE;
 	}
-
 }
 
 /****************************************************************************
 * setMaxMinAppAndDriverBuffers
 *
 * Set the application and corresponding driver buffers in order for the 
-* streaming callback to copy the data for the channel from the driver max and 
-* min buffers to the respective application buffers for aggregated data 
-* collection.
+* streaming callback to copy the data for the channel/digital port from the 
+* driver max and min buffers to the respective application buffers for 
+* aggregated data collection.
 *
 * Input Arguments:
 *
 * handle - the device handle.
-* channel - the channel number (should be a PS5000A_CHANNEL enumeration value).
+* channel - the channel/digital port number (should be a PS5000A_CHANNEL 
+*						enumeration value).
 * appMaxBuffer - the application max buffer.
 * appMinBuffer - the application min buffer.
 * driverMaxBuffer - the max buffer set by the driver.
 * driverMinBuffer - the min buffer set by the driver.
 * bufferLength - the length of the buffers (the length of the buffers must be
-*				 equal).
+*								equal).
 *
 * Returns:
 *
-* 0, if successful
-* -1, otherwise
+* PICO_OK, if successful
+* PICO_INVALID_HANDLE, if an invalid handle is used, or
+* PICO_INVALID_CHANNEL if an invalid channel/digital port is used, or
+* PICO_INVALID_PARAMETER if the bufferLength is less than or equal to 0.
 ****************************************************************************/
-extern int16_t PREF0 PREF1 setMaxMinAppAndDriverBuffers(int16_t handle, int16_t channel, int16_t * appMaxBuffer, int16_t * appMinBuffer, int16_t * driverMaxBuffer, int16_t * driverMinBuffer, uint32_t bufferLength)
+extern PICO_STATUS PREF0 PREF1 setMaxMinAppAndDriverBuffers(int16_t handle, PS5000A_CHANNEL channel, int16_t * appMaxBuffer, int16_t * appMinBuffer, int16_t * driverMaxBuffer, int16_t * driverMinBuffer, uint32_t bufferLength)
 {
+	// Map port number to internal enumeration for MSO devices.
+	PS5000A_WRAP_DIGITAL_PORT_INDEX portIndex = PS5000A_WRAP_DIGITAL_PORT0;
+
 	if (handle > 0)
 	{
-		if (channel < PS5000A_CHANNEL_A || channel >= PS5000A_MAX_CHANNELS)
+		if (bufferLength <= 0)
 		{
-			return -1;
+				return PICO_INVALID_PARAMETER;
+		}
+
+		if (channel == PS5000A_DIGITAL_PORT0 || channel == PS5000A_DIGITAL_PORT1)
+		{
+				if (channel == PS5000A_DIGITAL_PORT0)
+				{
+						portIndex = PS5000A_WRAP_DIGITAL_PORT0;
+				}
+				else
+				{
+						portIndex = PS5000A_WRAP_DIGITAL_PORT1;
+				}
+
+				_wrapBufferInfo.appDigiBuffers[portIndex * 2] = appMaxBuffer;
+				_wrapBufferInfo.driverDigiBuffers[portIndex * 2] = driverMaxBuffer;
+
+				_wrapBufferInfo.appDigiBuffers[portIndex * 2 + 1] = appMinBuffer;
+				_wrapBufferInfo.driverDigiBuffers[portIndex * 2 + 1] = driverMinBuffer;
+
+				_wrapBufferInfo.digiBufferLengths[portIndex] = bufferLength;
+
+				return PICO_OK;
+		}
+		else if (channel < PS5000A_CHANNEL_A || channel >= PS5000A_MAX_CHANNELS)
+		{
+			return PICO_INVALID_CHANNEL;
 		}
 		else
 		{
@@ -604,11 +729,86 @@ extern int16_t PREF0 PREF1 setMaxMinAppAndDriverBuffers(int16_t handle, int16_t 
 
 			_wrapBufferInfo.bufferLengths[channel] = bufferLength;
 
-			return 0;
+			return PICO_OK;
 		}
 	}
 	else
 	{
-		return -1;
+		return PICO_INVALID_HANDLE;
 	}
+}
+
+/****************************************************************************
+* setEnabledDigitalPorts
+*
+* Set the number of enabled digital ports on the device. This is used to
+* assist with copying data in the streaming callback.
+*
+* This function does not need to be called for non-MSO models.
+*
+* Input Arguments:
+*
+* handle - the device handle.
+* enabledDigitalPorts - an array representing the digital port states. This
+*												must be 2 elements in size.
+*
+* Returns:
+*
+* PICO_OK, if successful
+* PICO_INVALID_HANDLE, if handle is less than or equal to 0
+* PICO_INVALID_PARAMETER, if _digitalPortCount is not 0 or 2
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 setEnabledDigitalPorts(int16_t handle, int16_t * enabledDigitalPorts)
+{
+		if (handle > 0)
+		{
+				if (_digitalPortCount == 0 || _digitalPortCount == PS5000A_WRAP_MAX_DIGITAL_PORTS)
+				{
+						memcpy_s((int16_t *) _enabledDigitalPorts, PS5000A_WRAP_MAX_DIGITAL_PORTS * sizeof(int16_t),
+								(int16_t *) enabledDigitalPorts, PS5000A_WRAP_MAX_DIGITAL_PORTS * sizeof(int16_t));
+
+						return PICO_OK;
+				}
+				else
+				{
+						return PICO_INVALID_PARAMETER;
+				}
+		}
+		else
+		{
+				return PICO_INVALID_HANDLE;
+		}
+}
+
+/****************************************************************************
+* getOverflow
+*
+* Returns indication if there has been an overvoltage on one or more 
+* analogue inputs when collecting data in streaming mode.
+*
+* Input Arguments:
+*
+* handle - the handle of the required device.
+* overflow - on exit, a set of flags that indicate whether an overvoltage 
+*						has occurred on any of the channels. It is a bit field with 
+*						bit 0 denoting channel A.
+*
+* Returns:
+*
+* PICO_OK, if successful, or
+* PICO_INVALID_HANDLE if handle is less than or equal to 0
+*
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 getOverflow(int16_t handle, int16_t * overflow)
+{
+  if (handle > 0)
+	{
+		overflow = _overflow;
+	}
+	else
+	{
+		return PICO_INVALID_HANDLE;
+	}
+
+	return PICO_OK;
 }

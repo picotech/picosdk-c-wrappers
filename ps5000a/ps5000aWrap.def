@@ -14,3 +14,5 @@ EXPORTS
 	setEnabledChannels = _setEnabledChannels@8
 	setAppAndDriverBuffers = _setAppAndDriverBuffers@20
 	setMaxMinAppAndDriverBuffers = _setMaxMinAppAndDriverBuffers@28
+	setEnabledDigitalPorts = _setEnabledDigitalPorts@8
+	getOverflow = _getOverflow@8
