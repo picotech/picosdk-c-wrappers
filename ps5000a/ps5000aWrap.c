@@ -309,14 +309,14 @@ extern int16_t PREF0 PREF1 IsTriggerReady(int16_t handle, uint32_t *triggeredAt)
 *
 * Returns:
 *
-* 1
+* PICO_OK
 *
 ****************************************************************************/
-extern int16_t PREF0 PREF1 ClearTriggerReady(int16_t handle)
+extern PICO_STATUS PREF0 PREF1 ClearTriggerReady(int16_t handle)
 {
 	_triggeredAt = 0;
 	_triggered = FALSE;
-	return 1;
+	return PICO_OK;
 }
 
 /****************************************************************************
@@ -529,13 +529,12 @@ extern PICO_STATUS PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCo
 			// Determine if the device is an MSO
 			if (strstr(variant, "MSO") != NULL)
 			{
-					_digitalPortCount = 2;
+				 _digitalPortCount = 2;
 			}
 			else
 			{
-					_digitalPortCount = 0;
+			  _digitalPortCount = 0;
 			}
-
 	}
 
 	return status;
@@ -561,7 +560,6 @@ extern PICO_STATUS PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCo
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledChannels)
 {
-
 	if (handle > 0)
 	{
 		if (_channelCount > 0 && _channelCount <= PS5000A_MAX_CHANNELS)
@@ -573,12 +571,11 @@ extern PICO_STATUS PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enab
 		}
 		else
 		{
-				return PICO_INVALID_PARAMETER;
+		  return PICO_INVALID_PARAMETER;
 		}
 	}
 
 	return PICO_INVALID_HANDLE;
-
 }
 
 /****************************************************************************
@@ -621,11 +618,11 @@ extern PICO_STATUS PREF0 PREF1 setAppAndDriverBuffers(int16_t handle, PS5000A_CH
 		{
 				if (channel == PS5000A_DIGITAL_PORT0)
 				{
-						portIndex = PS5000A_WRAP_DIGITAL_PORT0;
+					portIndex = PS5000A_WRAP_DIGITAL_PORT0;
 				}
 				else
 				{
-						portIndex = PS5000A_WRAP_DIGITAL_PORT1;
+					portIndex = PS5000A_WRAP_DIGITAL_PORT1;
 				}
 
 				_wrapBufferInfo.appDigiBuffers[portIndex * 2] = appBuffer;
@@ -804,11 +801,10 @@ extern PICO_STATUS PREF0 PREF1 getOverflow(int16_t handle, int16_t * overflow)
   if (handle > 0)
 	{
 		overflow = _overflow;
+		return PICO_OK;
 	}
 	else
 	{
 		return PICO_INVALID_HANDLE;
 	}
-
-	return PICO_OK;
 }
