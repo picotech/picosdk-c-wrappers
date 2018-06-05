@@ -16,3 +16,10 @@ EXPORTS
 	setMaxMinAppAndDriverBuffers = _setMaxMinAppAndDriverBuffers@28
 	setEnabledDigitalPorts = _setEnabledDigitalPorts@8
 	getOverflow = _getOverflow@8
+	SetTriggerConditionsV2 = _SetTriggerConditionsV2@16
+	SetTriggerDirectionsV2 = _SetTriggerDirectionsV2@12
+	SetTriggerPropertiesV2 = _SetTriggerPropertiesV2@12
+	SetTriggerDigitalPortProperties = _SetTriggerDigitalPortProperties@12
+	SetPulseWidthQualifierConditions = _SetPulseWidthQualifierConditions@16
+	SetPulseWidthQualifierDirections = _SetPulseWidthQualifierDirections@12
+	SetPulseWidthDigitalPortProperties = _SetPulseWidthDigitalPortProperties@12

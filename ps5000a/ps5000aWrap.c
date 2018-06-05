@@ -151,7 +151,7 @@ void PREF1 BlockCallback(int16_t handle, PICO_STATUS status, void * pParameter)
 *
 * Returns:
 *
-* See ps5000aRunBlock return values.
+* PICO_OK or other code from PicoStatus.h
 *
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 RunBlock(int16_t handle, int32_t preTriggerSamples, int32_t postTriggerSamples,
@@ -177,7 +177,7 @@ extern PICO_STATUS PREF0 PREF1 RunBlock(int16_t handle, int32_t preTriggerSample
 *
 * Returns:
 *
-* See ps5000aGetStreamingLatestValues return values.
+* PICO_OK or other code from PicoStatus.h
 *
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 GetStreamingLatestValues(int16_t handle)
@@ -322,6 +322,8 @@ extern PICO_STATUS PREF0 PREF1 ClearTriggerReady(int16_t handle)
 /****************************************************************************
 * SetTriggerConditions
 *
+* NOTE: This function is deprecated - use SetTriggerConditionsV2 instead.
+*
 * This function sets up trigger conditions on the scope's inputs. The trigger 
 * is defined by one or more sets of integers corresponding to 
 * PS5000A_TRIGGER_CONDITIONS structures which are then converted and passed 
@@ -339,7 +341,7 @@ extern PICO_STATUS PREF0 PREF1 ClearTriggerReady(int16_t handle)
 *
 * Returns:
 *
-* See ps5000aSetTriggerConditions return values.
+* PICO_OK or other code from PicoStatus.h
 *
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 SetTriggerConditions(int16_t handle, int32_t *conditionsArray, int16_t nConditions)
@@ -371,6 +373,8 @@ extern PICO_STATUS PREF0 PREF1 SetTriggerConditions(int16_t handle, int32_t *con
 /****************************************************************************
 * SetTriggerProperties
 *
+* NOTE: This function is deprecated - use SetTriggerPropertiesV2 instead.
+* 
 * This function is used to enable or disable triggering and set its 
 * parameters by means of assigning the values from the propertiesArray to an 
 * array of TRIGGER_CHANNEL_PROPERTIES structures which are then passed to 
@@ -389,13 +393,12 @@ extern PICO_STATUS PREF0 PREF1 SetTriggerConditions(int16_t handle, int32_t *con
 * nProperties - the number that will be passed after the wrapper code has 
 *				created its structures. (i.e. the number of propertiesArray 
 *				elements / 6)
-* auxEnable - not used.
 * autoTrig - see autoTriggerMilliseconds in ps5000aSetTriggerChannelProperties.
 *
 *
 * Returns:
 *
-* See ps5000aSetTriggerProperties return values.
+* PICO_OK or other code from PicoStatus.h
 *
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 SetTriggerProperties(
@@ -459,7 +462,7 @@ extern PICO_STATUS PREF0 PREF1 SetTriggerProperties(
 *
 * Returns:
 *
-* See ps5000aSetPulseWidthQualifier return values.
+* PICO_OK or other code from PicoStatus.h
 *
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifier(
@@ -509,7 +512,7 @@ extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifier(
 *
 * Returns:
 *
-* See ps5000aGetUnitInfo return values
+* PICO_OK or other code from PicoStatus.h
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCount)
 {
@@ -807,4 +810,347 @@ extern PICO_STATUS PREF0 PREF1 getOverflow(int16_t handle, int16_t * overflow)
 	{
 		return PICO_INVALID_HANDLE;
 	}
+}
+
+/****************************************************************************
+* SetTriggerConditionsV2
+*
+* This function sets up trigger conditions on the scope's inputs. The trigger
+* is defined by one or more sets of integers corresponding to
+* PS5000A_CONDITION structures which are then converted and passed
+* to the ps5000aSetTriggerChannelConditionsV2 function.
+*
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the handle of the required device.
+* conditionsArray - an array of integer values specifying the conditions
+*										for each channel.
+* nConditions - the number that will be passed after the wrapper code has
+*								created its structures (i.e. the number of conditionsArray 
+*								elements / 2). Set to 0 to switch off triggering.
+* info - see ps5000aSetTriggerChannelConditionsV2
+*
+* Returns:
+*
+* PICO_OK or other code from PicoStatus.h
+*
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 SetTriggerConditionsV2(int16_t handle, int32_t *conditionsArray, int16_t nConditions, PS5000A_CONDITIONS_INFO info)
+{
+	PICO_STATUS status;
+	int16_t i = 0;
+	int16_t j = 0;
+
+	PS5000A_CONDITION *conditions = (PS5000A_CONDITION *)calloc(nConditions, sizeof(PS5000A_CONDITION));
+
+	for (i = 0; i < nConditions; i++)
+	{
+		conditions[i].source = (PS5000A_CHANNEL)conditionsArray[j];
+		conditions[i].condition = (PS5000A_TRIGGER_STATE)conditionsArray[j + 1];
+
+		j = j + 2;
+	}
+	status = ps5000aSetTriggerChannelConditionsV2(handle, conditions, nConditions, info);
+	free(conditions);
+
+	return status;
+}
+
+
+/****************************************************************************
+* SetTriggerDirectionsV2
+*
+* This function sets the direction of the trigger for each channel. The 
+* directions are defined by one or more sets of integers corresponding to
+* PS5000A_DIRECTION structures which are then converted and passed to the 
+* ps5000aSetTriggerChannelDirectionsV2 function.
+*
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the handle of the required device.
+* directionsArray - an array of integer values specifying the directions
+*										for each channel.
+* nConditions - the number that will be passed after the wrapper code has
+*								created its structures (i.e. the number of directionsArray
+*								elements / 3). 
+*
+* Returns:
+*
+* PICO_OK or other code from PicoStatus.h
+*
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 SetTriggerDirectionsV2(int16_t handle, int32_t * directionsArray, int16_t nDirections)
+{
+	PICO_STATUS status;
+	int16_t i = 0;
+	int16_t j = 0;
+
+	PS5000A_DIRECTION *directions = (PS5000A_DIRECTION *)calloc(nDirections, sizeof(PS5000A_DIRECTION));
+
+	for (i = 0; i < nDirections; i++)
+	{
+		directions[i].source = (PS5000A_CHANNEL) directionsArray[j];
+		directions[i].direction = (PS5000A_THRESHOLD_DIRECTION) directionsArray[j + 1];
+		directions[i].mode = (PS5000A_THRESHOLD_MODE) directionsArray[j + 2];
+
+		j = j + 3;
+	}
+
+	status = ps5000aSetTriggerChannelDirectionsV2(handle, directions, (uint16_t)nDirections);
+	free(directions);
+
+	return status;
+}
+
+/****************************************************************************
+* SetTriggerPropertiesV2
+*
+* This function is used to enable or disable triggering and set its
+* parameters by means of assigning the values from the propertiesArray to an
+* array of PS5000A_TRIGGER_CHANNEL_PROPERTIES_V2 structures which are then 
+* passed to the ps5000aSetTriggerChannelPropertiesV2 function with the other
+* parameters.
+*
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the handle of the required device.
+* propertiesArray - an array of sets of integers corresponding to
+*					PS5000A_TRIGGER_CHANNEL_PROPERTIES_V2 structures describing the
+*					required properties to be set. See also channelProperties
+*					in ps5000aSetTriggerChannelPropertiesV2.
+*
+* nProperties - the number that will be passed after the wrapper code has
+*								created its structures. (i.e. the number of propertiesArray
+*								elements / 5)
+*
+*
+* Returns:
+*
+* PICO_OK or other code from PicoStatus.h
+*
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 SetTriggerPropertiesV2(int16_t handle, int32_t *propertiesArray, int16_t nProperties)
+{
+	int16_t i;
+	int16_t j = 0;
+	int16_t auxEnable = 0;
+	PICO_STATUS status;
+
+	PS5000A_TRIGGER_CHANNEL_PROPERTIES_V2 *channelProperties = (PS5000A_TRIGGER_CHANNEL_PROPERTIES_V2 *)calloc(nProperties, sizeof(PS5000A_TRIGGER_CHANNEL_PROPERTIES_V2));
+
+	for (i = 0; i < nProperties; i++)
+	{
+		channelProperties[i].thresholdUpper = propertiesArray[j];
+		channelProperties[i].thresholdUpperHysteresis = propertiesArray[j + 1];
+		channelProperties[i].thresholdLower = propertiesArray[j + 2];
+		channelProperties[i].thresholdLowerHysteresis = propertiesArray[j + 3];
+		channelProperties[i].channel = (PS5000A_CHANNEL) propertiesArray[j + 4];
+
+		j = j + 5;
+	}
+
+	status = ps5000aSetTriggerChannelPropertiesV2(handle, channelProperties, nProperties, auxEnable);
+	free(channelProperties);
+
+	return status;
+}
+
+/****************************************************************************
+* SetTriggerDigitalPortProperties
+*
+* This function is used to set the individual digital channels' trigger 
+* directions by means of assigning the values from the digitalDirections 
+* array to an array of PS5000A_DIGITAL_CHANNEL_DIRECTIONS structures 
+* which are then passed to the ps5000aSetTriggerDigitalPortProperties 
+* function with the other parameters.
+*
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the handle of the required device.
+* digitalDirections - an array of sets of integers corresponding to
+*											PS5000A_DIGITAL_CHANNEL_DIRECTIONS structures 
+*											describing the required properties to be set. See 
+*											also directions in ps5000aSetTriggerDigitalPortProperties.
+*
+* nDirections - the number that will be passed after the wrapper code has
+*								created its structures. (i.e. the number of 
+*								digitalDirections elements / 2)
+*
+* Returns:
+*
+* PICO_OK or other code from PicoStatus.h
+*
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 SetTriggerDigitalPortProperties(int16_t handle, int32_t *digitalDirections, int16_t nDirections)
+{
+	int16_t i;
+	int16_t j = 0;
+	PICO_STATUS status;
+
+	PS5000A_DIGITAL_CHANNEL_DIRECTIONS *directions = (PS5000A_DIGITAL_CHANNEL_DIRECTIONS *)calloc(nDirections, sizeof(PS5000A_DIGITAL_CHANNEL_DIRECTIONS));
+
+	for (i = 0; i < nDirections; i++)
+	{
+		directions[i].channel = digitalDirections[j];
+		directions[i].direction = digitalDirections[j + 1];
+
+		j = j + 2;
+	}
+
+	status = ps5000aSetTriggerDigitalPortProperties(handle, directions, nDirections);
+	free(directions);
+
+	return status;
+}
+
+/****************************************************************************
+* SetPulseWidthQualifierConditions
+*
+* This function applies a condition to the pulse-width qualifier. The condition
+* is defined by one or more sets of integers corresponding to
+* PS5000A_CONDITION structures which are then converted and passed
+* to the ps5000aSetPulseWidthQualifierConditions function.
+*
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the handle of the required device.
+* pwqConditionsArray - an array of integer values specifying the conditions
+*										for each channel.
+* nConditions - the number that will be passed after the wrapper code has
+*								created its structures (i.e. the number of pwqConditionsArray
+*								elements / 2). Set to 0 to switch off the pulse-width qualifier.
+* info - see ps5000aSetPulseWidthQualifierConditions
+*
+* Returns:
+*
+* PICO_OK or other code from PicoStatus.h
+*
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifierConditions(int16_t handle, int32_t *pwqConditionsArray, int16_t nConditions, PS5000A_CONDITIONS_INFO info)
+{
+	PICO_STATUS status;
+	int16_t i = 0;
+	int16_t j = 0;
+
+	PS5000A_CONDITION * pwqConditions = (PS5000A_CONDITION *)calloc(nConditions, sizeof(PS5000A_CONDITION));
+
+	for (i = 0; i < nConditions; i++)
+	{
+		pwqConditions[i].source = (PS5000A_CHANNEL) pwqConditionsArray[j];
+		pwqConditions[i].condition = (PS5000A_TRIGGER_STATE) pwqConditionsArray[j + 1];
+
+		j = j + 2;
+	}
+
+	status = ps5000aSetPulseWidthQualifierConditions(handle, pwqConditions, nConditions, info);
+	free(pwqConditions);
+
+	return status;
+}
+
+/****************************************************************************
+* SetPulseWidthQualifierDirections
+*
+* This function sets the direction ofor all trigger sources used with the 
+* pulse width qualifier. The directions are defined by one or more sets of 
+* integers corresponding to PS5000A_DIRECTION structures which are then 
+* converted and passed to the ps5000aSetPulseWidthQualifierDirections function.
+*
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the handle of the required device.
+* pwqDirectionsArray - an array of integer values specifying the directions
+*										for each channel.
+* nConditions - the number that will be passed after the wrapper code has
+*								created its structures (i.e. the number of pwqDirectionsArray
+*								elements / 3).
+*
+* Returns:
+*
+* PICO_OK or other code from PicoStatus.h
+*
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifierDirections(int16_t handle, int32_t * pwqDirectionsArray, int16_t nDirections)
+{
+	PICO_STATUS status;
+	int16_t i = 0;
+	int16_t j = 0;
+
+	PS5000A_DIRECTION * pwqDirections = (PS5000A_DIRECTION *)calloc(nDirections, sizeof(PS5000A_DIRECTION));
+
+	for (i = 0; i < nDirections; i++)
+	{
+		pwqDirections[i].source = (PS5000A_CHANNEL) pwqDirectionsArray[j];
+		pwqDirections[i].direction = (PS5000A_THRESHOLD_DIRECTION) pwqDirectionsArray[j + 1];
+		pwqDirections[i].mode = (PS5000A_THRESHOLD_MODE) pwqDirectionsArray[j + 2];
+
+		j = j + 3;
+	}
+
+	status = ps5000aSetPulseWidthQualifierDirections(handle, pwqDirections, nDirections);
+	free(pwqDirections);
+
+	return status;
+}
+
+/****************************************************************************
+* SetPulseWidthDigitalPortProperties
+*
+* This function is used to set the individual digital channels' pulse-width 
+* trigger directions by means of assigning the values from the digitalDirections
+* array to an array of PS5000A_DIGITAL_CHANNEL_DIRECTIONS structures
+* which are then passed to the ps5000aSetSetPulseWidthDigitalPortProperties
+* function with the other parameters.
+*
+* Use this function with programming languages that do not support structs.
+*
+* Input Arguments:
+*
+* handle - the handle of the required device.
+* pwqDigitalDirections - an array of sets of integers corresponding to
+*											PS5000A_DIGITAL_CHANNEL_DIRECTIONS structures
+*											describing the required properties to be set. See
+*											also directions in ps5000aSetPulseWidthDigitalPortProperties.
+*
+* nDirections - the number that will be passed after the wrapper code has
+*								created its structures. (i.e. the number of
+*								pwqDigitalDirections elements / 2)
+*
+* Returns:
+*
+* PICO_OK or other code from PicoStatus.h
+*
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 SetPulseWidthDigitalPortProperties(int16_t handle, int32_t *pwqDigitalDirections, int16_t nDirections)
+{
+	int16_t i;
+	int16_t j = 0;
+	PICO_STATUS status;
+
+	PS5000A_DIGITAL_CHANNEL_DIRECTIONS *pwqDirections = (PS5000A_DIGITAL_CHANNEL_DIRECTIONS *)calloc(nDirections, sizeof(PS5000A_DIGITAL_CHANNEL_DIRECTIONS));
+
+	for (i = 0; i < nDirections; i++)
+	{
+		pwqDirections[i].channel = pwqDigitalDirections[j];
+		pwqDirections[i].direction = pwqDigitalDirections[j + 1];
+
+		j = j + 2;
+	}
+
+	status = ps5000aaSetPulseWidthDigitalPortProperties(handle, pwqDirections, nDirections);
+	free(pwqDirections);
+
+	return status;
 }

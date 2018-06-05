@@ -156,6 +156,7 @@ extern PICO_STATUS PREF0 PREF1 ClearTriggerReady
 	int16_t handle
 );
 
+// This function is deprecated - use SetTriggerConditionsV2
 extern PICO_STATUS PREF0 PREF1 SetTriggerConditions
 (
 	int16_t handle, 
@@ -163,6 +164,7 @@ extern PICO_STATUS PREF0 PREF1 SetTriggerConditions
 	int16_t nConditions
 );
 
+// This function is deprecated - use SetTriggerPropertiesV2
 extern PICO_STATUS PREF0 PREF1 SetTriggerProperties
 (
 	int16_t handle, 
@@ -171,6 +173,7 @@ extern PICO_STATUS PREF0 PREF1 SetTriggerProperties
 	int32_t autoTrig
 );
 
+// This function is deprecated - use SetPulseWidthQualifierV2
 extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifier
 (
 	int16_t handle,
@@ -224,5 +227,56 @@ extern PICO_STATUS PREF0 PREF1 getOverflow
 (
 		int16_t handle,
 		int16_t * overflow
+);
+
+extern PICO_STATUS PREF0 PREF1 SetTriggerConditionsV2
+(
+	int16_t handle,
+	int32_t *conditionsArray,
+	int16_t nConditions,
+	PS5000A_CONDITIONS_INFO info
+);
+
+extern PICO_STATUS PREF0 PREF1 SetTriggerDirectionsV2
+(
+	int16_t handle,
+	int32_t * directions,
+	int16_t nDirections
+);
+
+extern PICO_STATUS PREF0 PREF1 SetTriggerPropertiesV2
+(
+	int16_t handle,
+	int32_t *propertiesArray,
+	int16_t nProperties
+);
+
+extern PICO_STATUS PREF0 PREF1 SetTriggerDigitalPortProperties
+(
+	int16_t handle,
+	int32_t *digitalDirections,
+	int16_t nDirections
+);
+
+extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifierConditions
+(
+	int16_t handle,
+	int32_t *pwqConditionsArray,
+	int16_t nConditions,
+	PS5000A_CONDITIONS_INFO info
+);
+
+extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifierDirections
+(
+	int16_t handle,
+	int32_t * pwqDirectionsArray,
+	int16_t nDirections
+);
+
+extern PICO_STATUS PREF0 PREF1 SetPulseWidthDigitalPortProperties
+(
+	int16_t handle,
+	int32_t * pwqDigitalDirections,
+	int16_t nDirections
 );
 #endif
