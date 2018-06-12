@@ -802,7 +802,7 @@ extern PICO_STATUS PREF0 PREF1 getOverflow(int16_t handle, int16_t * overflow)
 {
   if (handle > 0)
 	{
-		overflow = _overflow;
+		*overflow = _overflow;
 		return PICO_OK;
 	}
 	else
