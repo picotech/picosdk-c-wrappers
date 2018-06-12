@@ -36,7 +36,7 @@
 *
 ****************************************************************************/
 void PREF1 StreamingCallback(
-    int16_t handle,
+  int16_t handle,
 	int32_t noOfSamples,
 	uint32_t startIndex,
 	int16_t overflow,
@@ -147,7 +147,6 @@ void PREF1 BlockCallback(int16_t handle, PICO_STATUS status, void * pParameter)
 * postTriggerSamples - see noOfPreTriggerSamples in ps5000aRunBlock.
 * timebase - see ps5000aRunBlock.
 * segmentIndex - see ps5000aRunBlock.
-*
 *
 * Returns:
 *
@@ -559,7 +558,7 @@ extern PICO_STATUS PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCo
 *
 * PICO_OK if successful,
 * PICO_INVALID_HANDLE if handle <= 0, or 
-* PICO_INVALID_PARAMETER if channelCount is out of range
+* PICO_INVALID_PARAMETER if _channelCount is out of range
 ****************************************************************************/
 extern PICO_STATUS PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledChannels)
 {
