@@ -1148,7 +1148,7 @@ extern PICO_STATUS PREF0 PREF1 SetPulseWidthDigitalPortProperties(int16_t handle
 		j = j + 2;
 	}
 
-	status = ps5000aaSetPulseWidthDigitalPortProperties(handle, pwqDirections, nDirections);
+	status = ps5000aSetPulseWidthDigitalPortProperties(handle, pwqDirections, nDirections);
 	free(pwqDirections);
 
 	return status;
