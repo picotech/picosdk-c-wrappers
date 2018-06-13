@@ -72,20 +72,25 @@ typedef enum enBOOL
 #define PS5000A_WRAP_MAX_DIGITAL_PORTS			2
 #define PS5000A_WRAP_MAX_DIGITAL_BUFFERS		4  // 4 - Port 0 Max/Min and Port 1 Max/Min
 
+/////////////////////////////////
+//
+//	Variable declarations
+//
+/////////////////////////////////
 
-int16_t		_ready;
-int16_t		_autoStop;
-uint32_t	_numSamples;
-uint32_t	_triggeredAt = 0;
-int16_t		_triggered = FALSE;
-uint32_t	_startIndex;				// Start index in driver data buffer
-int16_t		_overflow = 0;
+extern int16_t		_ready;
+extern int16_t		_autoStop;
+extern uint32_t		_numSamples;
+extern uint32_t		_triggeredAt;
+extern int16_t		_triggered;
+extern uint32_t		_startIndex;				// Start index in driver data buffer
+extern int16_t		_overflow;
 
-int16_t		_channelCount = 0; // Should be set to 2 or 4 from the main application
-int16_t		_enabledChannels[PS5000A_MAX_CHANNELS] = {0, 0, 0, 0}; // Keep a record of the channels that are enabled
+extern int16_t		_channelCount; // Should be set to 2 or 4 from the main application
+extern int16_t		_enabledChannels[PS5000A_MAX_CHANNELS]; // Keep a record of the channels that are enabled
 
-int16_t		_digitalPortCount = 0;																							// Should be set to 2 from the main application
-int16_t		_enabledDigitalPorts[PS5000A_WRAP_MAX_DIGITAL_PORTS] = { 0, 0 };		// Keep a record of the channels that are enabled
+extern int16_t		_digitalPortCount;																			// Should be set to 2 from the main application
+extern int16_t		_enabledDigitalPorts[PS5000A_WRAP_MAX_DIGITAL_PORTS];		// Keep a record of the channels that are enabled
 
 typedef struct tWrapBufferInfo
 {
@@ -100,7 +105,7 @@ typedef struct tWrapBufferInfo
 
 } WRAP_BUFFER_INFO;
 
-WRAP_BUFFER_INFO _wrapBufferInfo;
+extern WRAP_BUFFER_INFO _wrapBufferInfo;
 
 // Enum to define Digital Port indices
 typedef enum enPS5000AWrapDigitalPortIndex
@@ -111,7 +116,7 @@ typedef enum enPS5000AWrapDigitalPortIndex
 
 /////////////////////////////////
 //
-//	Function definitions
+//	Function declarations
 //
 /////////////////////////////////
 

@@ -23,9 +23,31 @@
 
 #include "ps5000aWrap.h"
 
+ /////////////////////////////////
+ //
+ //	Variable definitions
+ //
+ /////////////////////////////////
+
+int16_t		_ready = 0;
+int16_t		_autoStop = 0;
+uint32_t	_numSamples = 0;
+uint32_t	_triggeredAt = 0;
+int16_t		_triggered = FALSE;
+uint32_t	_startIndex = 0;				// Start index in driver data buffer
+int16_t		_overflow = 0;
+
+int16_t		_channelCount = 0; // Should be set to 2 or 4 from the main application
+int16_t		_enabledChannels[PS5000A_MAX_CHANNELS] = { 0, 0, 0, 0 }; // Keep a record of the channels that are enabled
+
+int16_t		_digitalPortCount = 0;																							// Should be set to 2 from the main application
+int16_t		_enabledDigitalPorts[PS5000A_WRAP_MAX_DIGITAL_PORTS] = { 0, 0 };		// Keep a record of the channels that are enabled
+
+WRAP_BUFFER_INFO _wrapBufferInfo;
+
 /////////////////////////////////
 //
-//	Function declarations
+//	Function definitions
 //
 /////////////////////////////////
 
