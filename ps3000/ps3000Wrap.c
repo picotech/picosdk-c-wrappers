@@ -19,7 +19,7 @@
  *
  *	This wrapper will only support streaming from a single device.
  *
- * Copyright (C) 2010-2017 Pico Technology Ltd. See LICENSE file for terms. 
+ * Copyright (C) 2010-2018 Pico Technology Ltd. See LICENSE file for terms. 
  *
  **************************************************************************/
 
@@ -145,8 +145,8 @@ extern int16_t PREF0 PREF1 IsReady(int16_t handle)
 * Input Arguments:
 *
 * handle - the handle of the required device.
-* overflow - an index into the overview buffers, indicating the sample at the 
-*				trigger event. Valid only when triggered is TRUE.
+* overflow - a bit field indicating whether the voltage on each of the input 
+*				channels has overflowed.
 * triggeredAt - an index into the overview buffers, indicating the sample at 
 *				the trigger event. Valid only when triggered is TRUE.
 * triggered - a Boolean indicating whether a trigger event has
