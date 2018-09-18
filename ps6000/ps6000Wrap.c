@@ -184,7 +184,7 @@ extern PICO_STATUS PREF0 PREF1 GetStreamingLatestValues(int16_t handle)
 ****************************************************************************/
 extern uint32_t PREF0 PREF1 AvailableData(int16_t handle, uint32_t *startIndex)
 {
-	if( _ready ) 
+	if ( _ready ) 
 	{
 		*startIndex = _startIndex;
 		return _numSamples;
@@ -506,7 +506,7 @@ extern int16_t PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledC
 
 	if (handle > 0)
 	{
-		if(_channelCount > 0 && _channelCount <= PS6000_MAX_CHANNELS)
+		if (_channelCount > 0 && _channelCount <= PS6000_MAX_CHANNELS)
 		{
 			memcpy_s((int16_t *)_enabledChannels, PS6000_MAX_CHANNELS * sizeof(int16_t), 
 				(int16_t *)enabledChannels, PS6000_MAX_CHANNELS * sizeof(int16_t));
