@@ -17,7 +17,7 @@
  *   Please refer to the PicoScope 6000 Series Programmer's Guide
  *   for descriptions of the underlying functions where stated.
  *
- * Copyright (C) 2009-2017 Pico Technology Ltd. See LICENSE file for terms.
+ * Copyright (C) 2009-2018 Pico Technology Ltd. See LICENSE file for terms.
  *
  **************************************************************************/
 
@@ -450,7 +450,7 @@ extern PICO_STATUS PREF0 PREF1 SetPulseWidthQualifier(
 
 	PICO_STATUS status;
 
-	for(i = 0; i < nConditions; i++)
+	for (i = 0; i < nConditions; i++)
 	{
 		pwqConditions[i].channelA = (PS6000_TRIGGER_STATE) pwqConditionsArray[j];
 		pwqConditions[i].channelB = (PS6000_TRIGGER_STATE) pwqConditionsArray[j + 1];
@@ -504,7 +504,7 @@ extern void PREF0 PREF1 setChannelCount(int16_t handle, int16_t channelCount)
 extern int16_t PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledChannels)
 {
 
-	if(handle > 0)
+	if (handle > 0)
 	{
 		if(_channelCount > 0 && _channelCount <= PS6000_MAX_CHANNELS)
 		{
@@ -541,7 +541,7 @@ extern int16_t PREF0 PREF1 setEnabledChannels(int16_t handle, int16_t * enabledC
 ****************************************************************************/
 extern int16_t PREF0 PREF1 setAppAndDriverBuffers(int16_t handle, int16_t channel, int16_t * appBuffer, int16_t * driverBuffer, uint32_t bufferLength)
 {
-	if(handle > 0)
+	if (handle > 0)
 	{
 		if(channel < PS6000_CHANNEL_A || channel >= PS6000_MAX_CHANNELS)
 		{
@@ -591,7 +591,7 @@ extern int16_t PREF0 PREF1 setMaxMinAppAndDriverBuffers(int16_t handle, int16_t 
 {
 	if(handle > 0)
 	{
-		if(channel < PS6000_CHANNEL_A || channel >= PS6000_MAX_CHANNELS)
+		if (channel < PS6000_CHANNEL_A || channel >= PS6000_MAX_CHANNELS)
 		{
 			return -1;
 		}
@@ -621,7 +621,7 @@ extern int16_t PREF0 PREF1 setMaxMinAppAndDriverBuffers(int16_t handle, int16_t 
 *
 * Input Arguments:
 *
-* None
+* handle - the device handle.
 *
 ****************************************************************************/
 extern void PREF0 PREF1 clearStreamingParameters(int16_t handle)
@@ -633,4 +633,36 @@ extern void PREF0 PREF1 clearStreamingParameters(int16_t handle)
 	_triggered = FALSE;
 	_startIndex = 0;
 	_overflow = 0;
+}
+
+/****************************************************************************
+* getOverflow
+*
+* Returns indication if there has been an overvoltage on one or more
+* analogue inputs when collecting data in streaming mode.
+*
+* Input Arguments:
+*
+* handle - the handle of the required device.
+* overflow - on exit, a set of flags that indicate whether an overvoltage
+*						has occurred on any of the channels. It is a bit field with
+*						bit 0 denoting channel A.
+*
+* Returns:
+*
+* PICO_OK, if successful, or
+* PICO_INVALID_HANDLE if handle is less than or equal to 0
+*
+****************************************************************************/
+extern PICO_STATUS PREF0 PREF1 getOverflow(int16_t handle, int16_t * overflow)
+{
+		if (handle > 0)
+		{
+				*overflow = _overflow;
+				return PICO_OK;
+		}
+		else
+		{
+				return PICO_INVALID_HANDLE;
+		}
 }

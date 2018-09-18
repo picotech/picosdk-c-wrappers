@@ -5,9 +5,9 @@
  * Description:
  *
  * This header defines the interface to the wrapper library for the 
- *	PicoScope 6000 series of PC Oscilloscopes.
+ *	PicoScope 6000 Series of PC Oscilloscopes.
  *
- * Copyright (C) 2009-2017 Pico Technology Ltd. See LICENSE file for terms.
+ * Copyright (C) 2009-2018 Pico Technology Ltd. See LICENSE file for terms.
  *
  ****************************************************************************/
 
@@ -197,6 +197,12 @@ extern int16_t PREF0 PREF1 setMaxMinAppAndDriverBuffers
 extern void PREF0 PREF1 clearStreamingParameters
 (
 	int16_t handle
+);
+
+extern PICO_STATUS PREF0 PREF1 getOverflow
+(
+		int16_t handle,
+		int16_t * overflow
 );
 
 #endif
