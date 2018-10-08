@@ -3,9 +3,9 @@
 *picosdk-c-wrappers* is a set of C wrapper library projects for PicoScope oscilloscopes.
 
 The wrapper functions provided by the wrapper libraries are for use with programming languages such as MathWorks MATLAB, National Instruments LabVIEW
-and Microsoft Excel VBA that do not support features of the C programming language such as callback functions. The source code contained in the Wrapper projects contains a description of the functions and the input and output parameters.
+and Microsoft Excel VBA that do not support features of the C programming language such as callback functions. The source code contained in the wrapper projects contains a description of the functions and the input and output parameters.
 
-The Wrapper projects are for Microsoft Windows platforms and are grouped by driver. The source code files may be customised for projects, and used for building wrapper libraries for Linux and Mac OS X platforms. 
+The wrapper projects are for Microsoft Windows platforms and are grouped by driver. The source code files may be customised for projects, and also used for building wrapper libraries for Linux and macOS platforms. 
 
 ## Getting started
 
@@ -20,7 +20,7 @@ The Wrapper projects are for Microsoft Windows platforms and are grouped by driv
 * A suitable IDE such as [Eclipse](https://www.eclipse.org/downloads/?)
 * Alternatively, ensure that the `autoconf` and `libtools` packages are installed for your operating system if building libraries from the terminal.
 
-#### Mac OS X
+#### macOS
 
 * A suitable IDE such as [XCode](https://developer.apple.com/xcode/)
 
@@ -38,9 +38,9 @@ Prerequisite files are available for the following platforms. Refer to the subse
 
 * Follow the instructions from our [Linux Software & Drivers for Oscilloscopes and Data Loggers page](https://www.picotech.com/downloads/linux) to install the required driver packages for your product.
 
-#### Mac OS X
+#### macOS
 
-* Visit our [Downloads page](https://www.picotech.com/downloads) and download the *PicoScope Beta for Mac OS X* application.
+* Visit our [Downloads page](https://www.picotech.com/downloads) and download the *PicoScope Beta for macOS* application.
 
 ### Programmer's Guides
 
@@ -66,9 +66,9 @@ See [LICENSE.md](LICENSE.md) for license terms.
 
 *Windows*, *Excel and Visual Basic for Applications*, and *Visual Studio* are registered trademarks of Microsoft Corporation. 
 
-*Mac* and *OS X* are registered trademarks of Apple, Inc. 
+*macOS* is a registered trademark of Apple Inc. 
 
 *Linux* is the registered trademark of Linus Torvalds in the U.S. and other countries.
 
-Copyright © 2006-2017 Pico Technology Ltd. All rights reserved.
+Copyright © 2006-2018 Pico Technology Ltd. All rights reserved.
 
